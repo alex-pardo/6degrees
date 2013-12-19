@@ -21,6 +21,7 @@ def main():
 
 			visited.append(current)
 			if request_count >= 14:
+				sleep(960)
 				try:
 					twitter = connectTwitter()
 				except Exception,e:
