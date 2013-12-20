@@ -2,6 +2,10 @@
 from twython import Twython, TwythonError
 import networkx as nx
 from time import sleep
+import random
+#import pylab as P
+import matplotlib.pyplot as plt
+
 def main():
 	MAX_ITER = 150
 	try:
@@ -13,31 +17,30 @@ def main():
 	visited = []
 
 	twitter = connectTwitter()
+	first = 1
 	iter_count = 0
 	request_count = 0
-	while len(not_visited) != 0 or iter_count > 1000: 
+	while len(not_visited) != 0 and iter_count < MAX_ITER: 
 		current = not_visited.pop(0)
 		if current not in visited:
 
 			visited.append(current)
-			if request_count >= 14:
-				sleep(960)
-				try:
-					twitter = connectTwitter()
-				except Exception,e:
-					print str(e)
-				request_count = 0
+			
 			loop = 1
 			while loop == 1:
 				try:
-					full_friends = twitter.get_friends_ids(user_id=current, count=5000)
-					full_followers = twitter.get_followers_ids(user_id=current, count=5000)
-					request_count += 2
+					full_friends = twitter.get_friends_ids(user_id=current, count=100)
+					full_followers = twitter.get_followers_ids(user_id=current, count=100)
 					loop = 0
 					print 'Read'
 				except Exception,e:
 					print str(e)
-					sleep(960)
+					if first == 1:
+						print 'drawing...'
+						nx.draw(G)  # networkx draw()
+						plt.draw() 
+						first = 0
+					sleep(60)
 					try:
 						twitter = connectTwitter()
 					except Exception,e:
@@ -52,8 +55,9 @@ def main():
 
 			for user in friends:
 				if user in followers: # Mutual friends are those the user is following and they are following the user back
-					not_visited.append(user)
 					G.add_edge(current, user)
+					if random.random() <= 0.3:
+						not_visited.append(user)
 					#print 'Add edge between', current , ' and ', user 
 			iter_count += 1
 			nx.write_gpickle(G,"mutual.gpickle")
