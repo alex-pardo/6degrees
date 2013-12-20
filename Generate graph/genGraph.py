@@ -38,7 +38,7 @@ def main():
 					if first == 1:
 						print 'drawing...'
 						nx.draw(G)  # networkx draw()
-						plt.draw() 
+						plt.show() 
 						first = 0
 					sleep(60)
 					try:
