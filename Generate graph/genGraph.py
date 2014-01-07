@@ -3,49 +3,70 @@ from twython import Twython, TwythonError
 import networkx as nx
 from time import sleep
 import random
+from random import choice
 #import pylab as P
-import matplotlib.pyplot as plt
+import matplotlib#.pyplot as plt
+import pylab as P
+import pickle
 
 def main():
 	MAX_ITER = 150
 	try:
 		G = nx.read_gpickle("mutual.gpickle")
-		not_visited = [G.nodes()[len(G.nodes())-1]]
+		not_visited = readList()
 	except:
+		print 'No stored information'
 		G = nx.Graph()
 		not_visited = ['165916420']
 	visited = []
-
+	if len(not_visited) == 0:
+		not_visited = ['165916420']
 	twitter = connectTwitter()
 	first = 1
 	iter_count = 0
 	request_count = 0
 	while len(not_visited) != 0 and iter_count < MAX_ITER: 
-		current = not_visited.pop(0)
+		current = choice(not_visited)
 		if current not in visited:
 
 			visited.append(current)
-			
 			loop = 1
 			while loop == 1:
 				try:
 					full_friends = twitter.get_friends_ids(user_id=current, count=100)
 					full_followers = twitter.get_followers_ids(user_id=current, count=100)
 					loop = 0
-					print 'Read'
+					first = 1
 				except Exception,e:
-					print str(e)
+					print 'E1:', str(e)
 					if first == 1:
-						print 'drawing...'
-						nx.draw(G)  # networkx draw()
-						plt.show() 
-						first = 0
-					sleep(60)
-					try:
-						twitter = connectTwitter()
-					except Exception,e:
-						print str(e)
+						#print 'drawing...'
 
+						try:
+							#plotGraph(G)
+							print 'Saving data'
+							saveData(G, not_visited)
+						except Exception, e3:
+							print 'No graph for drawing :( '
+						first = 0
+					if '401' in str(e): #401 error needs to reauthenticate
+						try:
+							print 'Reconnecting...'
+							twitter = connectTwitter()
+
+						except Exception,e2:
+							print 'E2:', str(e2)
+					else:
+						sleep(960)
+					#successful = 0
+					#while successful == 0:
+					#	try:
+					#		twitter = connectTwitter()
+					#		successful = 1
+					#	except Exception,e2:
+					#		print 'E2:', str(e2)
+					#		sleep(30)
+			print 'Information read'
 			friends = []
 			followers = []
 			for user in full_friends['ids']:
@@ -58,9 +79,19 @@ def main():
 					G.add_edge(current, user)
 					if random.random() <= 0.3:
 						not_visited.append(user)
-					#print 'Add edge between', current , ' and ', user 
+						for node in G.nodes():
+							if G.neighbors(node) <= 2:
+								if node not in not_visited:
+									not_visited.append(node)
 			iter_count += 1
-			nx.write_gpickle(G,"mutual.gpickle")
+	p.join
+			
+	
+def plotGraph(G):
+	print(nx.average_shortest_path_length(G))
+	pos=nx.graphviz_layout(G,prog="twopi",root=G.nodes()[0])
+	nx.draw(G,pos,with_labels=False,alpha=0.5,node_size=15)
+	P.show()
 
 def connectTwitter():
 	APP_KEY = 'ORbbZFlJWipi3HFblfPuQ'
@@ -79,5 +110,14 @@ def connectTwitter():
 	print 'Connected'
 	return twitter
 
+def saveData(G, not_visited):
+	nx.write_gpickle(G,"mutual.gpickle")
+	with open('not_visited', 'wb') as f:
+	    	pickle.dump(not_visited, f)
+
+def readList():
+	with open('not_visited', 'rb') as f:
+	    	not_visited = pickle.load(f)
+    	return not_visited
 
 main()
