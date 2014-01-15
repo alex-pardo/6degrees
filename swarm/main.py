@@ -5,12 +5,14 @@ import operator
 import matplotlib.pyplot as plt
 import numpy as numpy
 
+from threading import Thread
+
 
 ###############################
 #			MAIN
 ###############################
 
-def main(NUM_ANTS = 100, ITERATIONS = 10, GAMMA = 0.5, INCREMENT = 1, ANTS_PER_TURN = 100):
+def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.1, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 1000):
 
 	# Read the graph
 
@@ -24,7 +26,9 @@ def main(NUM_ANTS = 100, ITERATIONS = 10, GAMMA = 0.5, INCREMENT = 1, ANTS_PER_T
 
 	results = []
 	total_ants = 0
-
+	finished_ants = 0
+	total_length = 0
+	shortest_path = float('inf')
 	# REPEAT A CERTAIN NUMBER OF TIMES (to acquire mean results)
 	for iter in range(0, ITERATIONS):
 
@@ -40,8 +44,11 @@ def main(NUM_ANTS = 100, ITERATIONS = 10, GAMMA = 0.5, INCREMENT = 1, ANTS_PER_T
 		end = start
 		while end == start:
 			end = random.choice(G.nodes())
+
 		print 'Finding path between ', str(start), 'and', str(end)
 
+		threads = [None] * NUM_ANTS
+		returned_matrices = [None] * NUM_ANTS
 		# Setup the ants (initialize the current_node param. & the objective)
 		ants = []
 		for a in range(0, ANTS_PER_TURN):
@@ -50,16 +57,22 @@ def main(NUM_ANTS = 100, ITERATIONS = 10, GAMMA = 0.5, INCREMENT = 1, ANTS_PER_T
 			ants[a].setStart(start)
 			ants[a].setObjective(end)
 			total_ants += 1
-
+		epoch = 0
 		# WHILE not (all ants reached the objective)
-		while len(ants) > 0:
+		while epoch < MAX_EPOCH and len(ants) > 0:
+			#print len(ants)
+			#print epoch
+			#print '----'
+			epoch += 1
 			a = len(ants)
-			while total_ants < NUM_ANTS and len(ants) < ANTS_PER_TURN:
+			tmp_counter = 0
+			while total_ants < NUM_ANTS and tmp_counter < ANTS_PER_TURN:
 				ants.append(Ant(G, INCREMENT))
 				ants[a].setStart(G.nodes()[1])
 				ants[a].setObjective(G.nodes()[4])
 				a += 1
 				total_ants += 1
+				tmp_counter += 1
 
 			# Decrease the pheromone on each position (because of time)
 			decreasePheromone(pheromone, GAMMA)
@@ -67,21 +80,45 @@ def main(NUM_ANTS = 100, ITERATIONS = 10, GAMMA = 0.5, INCREMENT = 1, ANTS_PER_T
 			# Run all the ants one step (concurrently?? -> be careful with writing to pheromone matrix -> use a temporal_matrix?)
 			deleting_list = []
 			for a in range(0, len(ants)):
-				pheromone_update = ants[a].step(pheromone, pheromone_update)
+				threads[a] = Thread(target=ants[a].step, args=(pheromone, returned_matrices, a))
+				threads[a].start()
+
+			for a in range(len(ants)):
+				threads[a].join()
+			
+			for i in range(len(ants)):
+				pheromone = combineDics(pheromone, returned_matrices[i])
+   			for a in xrange(len(ants)-1,0,-1):
 				if ants[a].hasReachedObjective():
-					deleting_list.append(a)
-			if len(deleting_list) > 0:
-				for ant in deleting_list[::-1]:
-					pheromone_update = ants[ant].returnToStart(pheromone)
-					del(ants[ant])
-			pheromone = combineDics(pheromone, pheromone_update)
+					tmp_len = ants[a].returnToStart(pheromone)
+					total_length += tmp_len
+					finished_ants += 1
+					if tmp_len < shortest_path:
+						shortest_path = tmp_len
+					#pheromone = combineDics(pheromone, pheromone_update)
+					del(ants[a])
+					del(threads[a])
+					del(returned_matrices[a])
+
+
+			# for a in range(0, len(ants)):
+			# 	pheromone_update = ants[a].step(pheromone, pheromone_update)
+			# 	if ants[a].hasReachedObjective():
+			# 		deleting_list.append(a)
+			# if len(deleting_list) > 0:
+			# 	for ant in deleting_list[::-1]:
+			# 		pheromone_update = ants[ant].returnToStart(pheromone)
+			# 		del(ants[ant])
+			# pheromone = combineDics(pheromone, pheromone_update)
 
 		# END WHILE
 		print 'All ants ended'
-		# Recover the path with higher weight (greedy)
 
-		result = recoverPath(pheromone, str(start), str(end))
-		print 'Best path:', result
+		# Recover the path with higher weight (greedy)
+		#result = recoverPath(pheromone, str(start), str(end))
+		result = total_length/float(finished_ants)
+		print 'Avg. path:', result
+		print 'Shortest path:', shortest_path
 		results.append(result)
 		print '---------'
 	# Get mean results
@@ -94,14 +131,14 @@ def main(NUM_ANTS = 100, ITERATIONS = 10, GAMMA = 0.5, INCREMENT = 1, ANTS_PER_T
 	for i in range(1,9):
 		node_labels[i] = str(i)
 
-	#pos = nx.spring_layout(G, scale=20)
+	pos = nx.spring_layout(G, scale=20)
 	
-	# nx.draw_networkx_nodes(G, pos)
-	# nx.draw_networkx_edges(G,pos)
-	# nx.draw_networkx_labels(G, pos, node_labels, font_size=16)
-	# nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-	# plt.axis('off')
-	# plt.show()
+	nx.draw_networkx_nodes(G, pos)
+	nx.draw_networkx_edges(G,pos)
+	nx.draw_networkx_labels(G, pos, node_labels, font_size=16)
+	nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+	plt.axis('off')
+	plt.show()
 
 	print 'FINAL MEAN RESULTS:' , numpy.mean(results), '\nWITH STD. DEVIATION:', numpy.std(results)
 
@@ -110,7 +147,7 @@ def decreasePheromone(pheromone, gamma):
 
 	new = copy.deepcopy(pheromone)
 	for key in pheromone.keys():
-		new[key] = pheromone[key] - gamma# * pheromone[key]
+		new[key] = pheromone[key] - gamma * pheromone[key]
 	return new
 
 
@@ -126,6 +163,10 @@ def recoverPath(pheromone, start, objective):
 			if key.startswith(current):
 				if key.split(',')[1] not in visited:
 					candidates[key] = pheromone[key]
+					#try:
+					#	pheromone.pop(key,None)
+					#except:
+					#	print 'except'
 		if len(candidates.keys()) == 0:
 			current = last[0]
 			length += 1
@@ -176,11 +217,12 @@ class Ant():
     def setObjective(self, objective):
     	self.objective = objective
 
-    def step(self, pheromone, new):
+    def step(self, pheromone, result, index):
 
     	# From the current node, decide which neighbour to choose using the weights of the edges as the probability of going in this direction	
     	neigh = []
     	probs = []
+    	new = {}
     	for neighbour in self.graph.neighbors(self.current):
     		neigh.append(neighbour)
     		probs.append(int(pheromone.get(self.current, neighbour)))
@@ -198,7 +240,7 @@ class Ant():
     	self.current = neigh[candidate]
     	self.path.append(self.current)
     	# return the new weights
-    	return new
+    	result[index] = new
 
     def chooseNeighbour(self, probs): # Look at test.py 
     	try:
@@ -221,7 +263,7 @@ class Ant():
     def returnToStart(self, pheromone):
     	for pos in xrange(len(self.path)-1, 1, -1):
     		pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] += self.increment
-    	return pheromone
+    	return len(self.path)
     	
 
 
