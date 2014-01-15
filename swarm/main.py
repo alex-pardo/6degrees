@@ -3,21 +3,22 @@ import copy
 import random
 import operator
 import matplotlib.pyplot as plt
+import numpy as numpy
 
 
 ###############################
 #			MAIN
 ###############################
 
-def main(NUM_ANTS = 1000, ITERATIONS = 1, GAMMA = 0, INCREMENT = 1, ANTS_PER_TURN = 1000):
+def main(NUM_ANTS = 100, ITERATIONS = 10, GAMMA = 0.5, INCREMENT = 1, ANTS_PER_TURN = 100):
 
 	# Read the graph
 
-	#G = nx.read_gpickle("mutual.gpickle")
-	G = nx.Graph()
-	G.add_nodes_from(range(1,9))
+	G = nx.read_gpickle("mutual.gpickle")
+	#G = nx.Graph()
+	#G.add_nodes_from(range(1,9))
 
-	G.add_edges_from([(1,2),(2,3),(3,4),(1,8),(1,5),(8,5),(5,2),(2,7),(7,3),(2,6)])
+	#G.add_edges_from([(1,2),(2,3),(3,4),(1,8),(1,5),(8,5),(5,2),(2,7),(7,3),(2,6)])
 
 	# Initialize vars
 
@@ -34,13 +35,20 @@ def main(NUM_ANTS = 1000, ITERATIONS = 1, GAMMA = 0, INCREMENT = 1, ANTS_PER_TUR
 			for neigh in G.neighbors(node):
 				pheromone[str(node)+','+str(neigh)] = 1
 
-		# Setup the ants (initialize the current_node param. & the objective)
+		# Setup start and end points
+		start = random.choice(G.nodes())
+		end = start
+		while end == start:
+			end = random.choice(G.nodes())
+		print 'Finding path between ', str(start), 'and', str(end)
 
+		# Setup the ants (initialize the current_node param. & the objective)
 		ants = []
 		for a in range(0, ANTS_PER_TURN):
 			ants.append(Ant(G, INCREMENT))
-			ants[a].setStart(G.nodes()[1])
-			ants[a].setObjective(G.nodes()[4])
+			
+			ants[a].setStart(start)
+			ants[a].setObjective(end)
 			total_ants += 1
 
 		# WHILE not (all ants reached the objective)
@@ -69,10 +77,11 @@ def main(NUM_ANTS = 1000, ITERATIONS = 1, GAMMA = 0, INCREMENT = 1, ANTS_PER_TUR
 			pheromone = combineDics(pheromone, pheromone_update)
 
 		# END WHILE
-
+		print 'All ants ended'
 		# Recover the path with higher weight (greedy)
 
-		result = recoverPath(pheromone, '1', '3')
+		result = recoverPath(pheromone, str(start), str(end))
+		print 'Best path:', result
 		results.append(result)
 		print '---------'
 	# Get mean results
@@ -85,31 +94,16 @@ def main(NUM_ANTS = 1000, ITERATIONS = 1, GAMMA = 0, INCREMENT = 1, ANTS_PER_TUR
 	for i in range(1,9):
 		node_labels[i] = str(i)
 
-	pos = nx.spring_layout(G, scale=20)
-	# path = [1]
-	# weights = []
-	# current = 1
-	# while current != 4:
-	# 	neighs = G.neighbors(current)
-	# 	closest = current
-	# 	distance = float('inf')
-	# 	for n in neighs:
-	# 		if G[current][n]['weight'] < distance:
-	# 			distance = G[current][n]['weight']
-	# 			closest = n
-	# 	current = closest
-	# 	path.append(current)
-	# 	weights.append(distance)
-	# print path
-	# print weights
-	nx.draw_networkx_nodes(G, pos)
-	nx.draw_networkx_edges(G,pos)
-	nx.draw_networkx_labels(G, pos, node_labels, font_size=16)
-	nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-	plt.axis('off')
-	plt.show()
+	#pos = nx.spring_layout(G, scale=20)
+	
+	# nx.draw_networkx_nodes(G, pos)
+	# nx.draw_networkx_edges(G,pos)
+	# nx.draw_networkx_labels(G, pos, node_labels, font_size=16)
+	# nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+	# plt.axis('off')
+	# plt.show()
 
-	print getMean(results)
+	print 'FINAL MEAN RESULTS:' , numpy.mean(results), '\nWITH STD. DEVIATION:', numpy.std(results)
 
 
 def decreasePheromone(pheromone, gamma):
@@ -124,6 +118,7 @@ def recoverPath(pheromone, start, objective):
 	current = start
 	visited = []
 	length = 0
+	last = []
 	while current != objective:
 		visited.append(current)
 		candidates = {}
@@ -131,11 +126,14 @@ def recoverPath(pheromone, start, objective):
 			if key.startswith(current):
 				if key.split(',')[1] not in visited:
 					candidates[key] = pheromone[key]
-		if len(candidates) == 0:
-			return -1
-		tmp = max(candidates.iteritems(), key=operator.itemgetter(1))[0]
-		current = tmp.split(',')[1]
-		length += 1
+		if len(candidates.keys()) == 0:
+			current = last[0]
+			length += 1
+		else:
+			tmp = max(candidates.iteritems(), key=operator.itemgetter(1))[0]
+			last.insert(0,current)
+			current = tmp.split(',')[1]
+			length += 1
 	return length
 
 		
@@ -185,7 +183,8 @@ class Ant():
     	probs = []
     	for neighbour in self.graph.neighbors(self.current):
     		neigh.append(neighbour)
-    		probs.append(pheromone.get(self.current, neighbour))
+    		probs.append(int(pheromone.get(self.current, neighbour)))
+    		
 
     	candidate = self.chooseNeighbour(probs)
     	# Leave a pheromone on the edge
@@ -202,7 +201,11 @@ class Ant():
     	return new
 
     def chooseNeighbour(self, probs): # Look at test.py 
-    	tmp = sum(probs)
+    	try:
+    		tmp = sum(probs)
+    	except Exception, e:
+    		print probs
+    	
     	for i in range(0, len(probs)):
     		probs[i] /= float(tmp)
     	r = random.random()
