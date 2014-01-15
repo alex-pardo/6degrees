@@ -12,7 +12,7 @@ from threading import Thread
 #			MAIN
 ###############################
 
-def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.1, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 1000):
+def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.4, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 500):
 
 	# Read the graph
 
