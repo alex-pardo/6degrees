@@ -12,7 +12,7 @@ from threading import Thread
 #			MAIN
 ###############################
 
-def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.4, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 500):
+def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.2, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 500):
 
 	# Read the graph
 
@@ -25,13 +25,14 @@ def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.4, INCREMENT = 1, ANTS_PER_
 	# Initialize vars
 
 	results = []
-	total_ants = 0
-	finished_ants = 0
-	total_length = 0
-	shortest_path = float('inf')
+	best_path = float('inf')
 	# REPEAT A CERTAIN NUMBER OF TIMES (to acquire mean results)
 	for iter in range(0, ITERATIONS):
 
+		total_ants = 0
+		finished_ants = 0
+		total_length = 0
+		shortest_path = float('inf')
 		# Initialize the pheromone matrix (weights of the transition fo the edges) to 1
 
 		pheromone = {} # adjacency matrix
@@ -119,28 +120,31 @@ def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.4, INCREMENT = 1, ANTS_PER_
 		result = total_length/float(finished_ants)
 		print 'Avg. path:', result
 		print 'Shortest path:', shortest_path
-		results.append(result)
+		if shortest_path < best_path:
+			best_path = shortest_path
+		results.append(shortest_path)
 		print '---------'
 	# Get mean results
-	edge_labels = {}
-	for key in pheromone.keys():
-		tmp = key.split(',')
-		edge_labels[(int(tmp[0]),int(tmp[1]))] = round((pheromone[key]/float(max(pheromone.values())))*100)/100
-		G[int(tmp[0])][int(tmp[1])]['weight'] = round((pheromone[key]/float(max(pheromone.values())))*100)/100
-	node_labels = {}
-	for i in range(1,9):
-		node_labels[i] = str(i)
+	# edge_labels = {}
+	# for key in pheromone.keys():
+	# 	tmp = key.split(',')
+	# 	edge_labels[(int(tmp[0]),int(tmp[1]))] = round((pheromone[key]/float(max(pheromone.values())))*100)/100
+	# 	G[int(tmp[0])][int(tmp[1])]['weight'] = round((pheromone[key]/float(max(pheromone.values())))*100)/100
+	# node_labels = {}
+	# for i in range(1,9):
+	# 	node_labels[i] = str(i)
 
-	pos = nx.spring_layout(G, scale=20)
+	# pos = nx.spring_layout(G, scale=20)
 	
-	nx.draw_networkx_nodes(G, pos)
-	nx.draw_networkx_edges(G,pos)
-	nx.draw_networkx_labels(G, pos, node_labels, font_size=16)
-	nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-	plt.axis('off')
-	plt.show()
+	# nx.draw_networkx_nodes(G, pos)
+	# nx.draw_networkx_edges(G,pos)
+	# nx.draw_networkx_labels(G, pos, node_labels, font_size=16)
+	# nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+	# plt.axis('off')
+	# plt.show()
 
-	print 'FINAL MEAN RESULTS:' , numpy.mean(results), '\nWITH STD. DEVIATION:', numpy.std(results)
+	print 'FINAL MEAN SHORTEST PATH:' , numpy.mean(results), '\nWITH STD. DEVIATION:', numpy.std(results)
+	print 'FINAL SHORTEST PATH', best_path
 
 
 def decreasePheromone(pheromone, gamma):
