@@ -12,7 +12,7 @@ from threading import Thread
 #			MAIN
 ###############################
 
-def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.2, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 500):
+def main(NUM_ANTS = 100, ITERATIONS = 100, GAMMA = 0.3, INCREMENT = 1, ANTS_PER_TURN = 2, MAX_EPOCH = 500):
 
 	# Read the graph
 
@@ -117,12 +117,17 @@ def main(NUM_ANTS = 1000, ITERATIONS = 10, GAMMA = 0.2, INCREMENT = 1, ANTS_PER_
 
 		# Recover the path with higher weight (greedy)
 		#result = recoverPath(pheromone, str(start), str(end))
-		result = total_length/float(finished_ants)
-		print 'Avg. path:', result
-		print 'Shortest path:', shortest_path
-		if shortest_path < best_path:
-			best_path = shortest_path
-		results.append(shortest_path)
+		try:
+			result = total_length/float(finished_ants)
+			print 'Avg. path:', result
+			print 'Shortest path:', shortest_path
+			if shortest_path < best_path:
+				best_path = shortest_path
+			results.append(shortest_path)
+		except Exception, e:
+			print 'None of the ants have finished :('
+		
+		
 		print '---------'
 	# Get mean results
 	# edge_labels = {}

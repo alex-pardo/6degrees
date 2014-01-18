@@ -1,9 +1,11 @@
 \documentclass[anon]{CI}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
 
 % The following packages will be automatically loaded:
 % amsmath, amssymb, natbib, graphicx, url, algorithm2e
 
-\title[My CI Project]{My beautiful CI Project}
+\title[My CI Project]{Swarm intelligence for counting the degrees of separation in Twitter}
 
  % Use \Name{Author Name} to specify the name.
  % If the surname contains spaces, enclose the surname
@@ -25,11 +27,9 @@
 
 
  % Authors with different addresses:
- \author{\Name{Author Name1} \Email{abc@myemailaddress.com}\\
- \addr Academic address (optional)
+ \author{\Name{Àlex Pardo Fernandez} \Email{alexpardo.5@gmail.com}\\
  \AND
- \Name{Author Name2} \Email{xyz@myemailaddress.com}\\
- \addr Academic address (optional)
+ \Name{David Sánchez Pinsach} \Email{sdividis@gmail.com}\\
  }
 
 \begin{document}
@@ -41,20 +41,39 @@ This is a great project and therefore it has a concise abstract.
 \end{abstract}
 
 \begin{keywords}
-List of keywords
+Swarm Intelligence, Ant Colony Optimization, Twitter, Degrees of Separation.
 \end{keywords}
 
 
 \section{Problem statement and goals}
 
-This is where the content of your paper starts. Remember:
+\textbf{This is where the content of your paper starts. Remember:
 \begin{itemize}
 \item Limit the main text (without bibliography and appendices) to 10 pages.
 \item Include, either in the main text or the appendices, enough details to convince the lecturers of the project's merits.
 \item You should cite all relevant references, including your own.
-\end{itemize}
+\end{itemize}}
+
+Content:
+\begin{enumerate}
+\item Explain theory of the 6 degrees
+\item Define the network
+\item Goals: estimate the degrees of separation in twitter
+
+\end{enumerate}
+
+
 
 \section{Previous work}
+
+\begin{itemize}
+\item ACO original \citep{Colorni91}
+\item general theory \citep{watts1998collective}
+\item on Twitter as \citep{cheng}
+\item on other social nets such as
+
+
+\end{itemize}
 
 \section{The CI methods}
 
@@ -66,8 +85,7 @@ This is where the content of your paper starts. Remember:
 
 \section*{References}
 
-\bibliography{yourbibfile}
-
+\bibliography{bibliography.bib}
 
 \appendix
 
