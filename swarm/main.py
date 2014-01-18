@@ -4,23 +4,29 @@ import random
 import operator
 import matplotlib.pyplot as plt
 import numpy as numpy
-
+import os
 from threading import Thread
-
+from itertools import chain
 
 ###############################
 #			MAIN
 ###############################
-
-def main(NUM_ANTS = 100, ITERATIONS = 100, GAMMA = 0.3, INCREMENT = 1, ANTS_PER_TURN = 2, MAX_EPOCH = 500):
+system_pheromone = 0
+def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.1, INCREMENT = 1, ANTS_PER_TURN = 10, MAX_EPOCH = 150):
 
 	# Read the graph
 
-	G = nx.read_gpickle("mutual.gpickle")
-	#G = nx.Graph()
-	#G.add_nodes_from(range(1,9))
-
-	#G.add_edges_from([(1,2),(2,3),(3,4),(1,8),(1,5),(8,5),(5,2),(2,7),(7,3),(2,6)])
+	#G = nx.read_gpickle("mutual.gpickle")
+	print 'Reading edges from file'
+	G = nx.read_edgelist(os.getcwd()+"/foursquare/edges.csv", delimiter=",", nodetype=int)
+	print 'Graph loaded'
+	print 'Nodes: ', G.number_of_nodes()
+	
+	global system_pheromone
+	system_pheromone = G.number_of_edges()
+	print 'Edges:', system_pheromone
+	
+	
 
 	# Initialize vars
 
@@ -36,9 +42,9 @@ def main(NUM_ANTS = 100, ITERATIONS = 100, GAMMA = 0.3, INCREMENT = 1, ANTS_PER_
 		# Initialize the pheromone matrix (weights of the transition fo the edges) to 1
 
 		pheromone = {} # adjacency matrix
-		for node in G.nodes():
-			for neigh in G.neighbors(node):
-				pheromone[str(node)+','+str(neigh)] = 1
+		# for node in G.nodes():
+		# 	for neigh in G.neighbors(node):
+		# 		pheromone[str(node)+','+str(neigh)] = 1
 
 		# Setup start and end points
 		start = random.choice(G.nodes())
@@ -54,32 +60,33 @@ def main(NUM_ANTS = 100, ITERATIONS = 100, GAMMA = 0.3, INCREMENT = 1, ANTS_PER_
 		ants = []
 		for a in range(0, ANTS_PER_TURN):
 			ants.append(Ant(G, INCREMENT))
-			
 			ants[a].setStart(start)
 			ants[a].setObjective(end)
 			total_ants += 1
 		epoch = 0
+		ants_finish_last_turn = 0
 		# WHILE not (all ants reached the objective)
 		while epoch < MAX_EPOCH and len(ants) > 0:
-			#print len(ants)
-			#print epoch
-			#print '----'
+			if epoch%10 == 0:
+				print len(ants)
+				print epoch
+				print len(pheromone)
+				print '----'
 			epoch += 1
 			a = len(ants)
 			tmp_counter = 0
 			while total_ants < NUM_ANTS and tmp_counter < ANTS_PER_TURN:
 				ants.append(Ant(G, INCREMENT))
-				ants[a].setStart(G.nodes()[1])
-				ants[a].setObjective(G.nodes()[4])
+				ants[a].setStart(start)
+				ants[a].setObjective(end)
 				a += 1
 				total_ants += 1
 				tmp_counter += 1
 
-			# Decrease the pheromone on each position (because of time)
-			decreasePheromone(pheromone, GAMMA)
+			# Decrease the pheromone on each position (because of time) and maintain the system pheromone
+			pheromone = normalizePheromone(pheromone, DECAY, len(ants)+ants_finish_last_turn, INCREMENT)
 			pheromone_update = {}
 			# Run all the ants one step (concurrently?? -> be careful with writing to pheromone matrix -> use a temporal_matrix?)
-			deleting_list = []
 			for a in range(0, len(ants)):
 				threads[a] = Thread(target=ants[a].step, args=(pheromone, returned_matrices, a))
 				threads[a].start()
@@ -89,14 +96,22 @@ def main(NUM_ANTS = 100, ITERATIONS = 100, GAMMA = 0.3, INCREMENT = 1, ANTS_PER_
 			
 			for i in range(len(ants)):
 				pheromone = combineDics(pheromone, returned_matrices[i])
+			ants_finish_last_turn = 0
    			for a in xrange(len(ants)-1,0,-1):
 				if ants[a].hasReachedObjective():
-					tmp_len = ants[a].returnToStart(pheromone)
-					total_length += tmp_len
-					finished_ants += 1
-					if tmp_len < shortest_path:
-						shortest_path = tmp_len
-					#pheromone = combineDics(pheromone, pheromone_update)
+					
+					tmp = ants[a].returnToStart(pheromone)
+					tmp_len = tmp['len']
+					if tmp_len > 0:
+						pheromone.update(tmp['pheromone'])
+						print 'ANT ENDS'
+						# print tmp_len
+						ants_finish_last_turn += tmp_len
+						total_length += tmp_len
+						finished_ants += 1
+						if tmp_len < shortest_path:
+							shortest_path = tmp_len
+						#pheromone = combineDics(pheromone, pheromone_update)
 					del(ants[a])
 					del(threads[a])
 					del(returned_matrices[a])
@@ -152,12 +167,17 @@ def main(NUM_ANTS = 100, ITERATIONS = 100, GAMMA = 0.3, INCREMENT = 1, ANTS_PER_
 	print 'FINAL SHORTEST PATH', best_path
 
 
-def decreasePheromone(pheromone, gamma):
+def normalizePheromone(pheromone, decay, num_ants, update):
 
-	new = copy.deepcopy(pheromone)
-	for key in pheromone.keys():
-		new[key] = pheromone[key] - gamma * pheromone[key]
-	return new
+	#new = copy.deepcopy(pheromone)
+	new_pheromone = float(num_ants*update*(1-decay))
+	nu = (new_pheromone + system_pheromone) / float(system_pheromone)
+
+	pheromone.update((x, (y*(1-decay))/float(nu)) for x, y in pheromone.items())
+	return pheromone
+	# for key in pheromone.keys():
+	# 	new[key] = (pheromone[key] * (1-decay))/float(nu)
+	# return new
 
 
 def recoverPath(pheromone, start, objective):
@@ -196,12 +216,17 @@ def getMean(results):
 	return sum(tmp) / float(len(tmp))
 
 def combineDics(D1, D2):
-	for new_value in D2.keys():
-		try:
-			D1[new_value] = D1[new_value] + D2[new_value]
-		except Exception, e: # should never happen
-			D1[new_value] = D2[new_value]
-	return D1
+
+	D = dict(chain(D1.items(), D2.items()))
+
+	return D
+
+	# for new_value in D2.keys():
+	# 	try:
+	# 		D1[new_value] = float(D1[new_value] + D2[new_value])
+	# 	except Exception, e: 
+	# 		D1[new_value] = float(D2[new_value])
+	# return D1
 		
 
 ###############################
@@ -234,15 +259,19 @@ class Ant():
     	new = {}
     	for neighbour in self.graph.neighbors(self.current):
     		neigh.append(neighbour)
-    		probs.append(int(pheromone.get(self.current, neighbour)))
+    		try:
+    			probs.append(float(pheromone[str(self.current)+','+ str(neighbour)]))
+    		except Exception, e:
+    			probs.append(1)
+    		
     		
 
     	candidate = self.chooseNeighbour(probs)
     	# Leave a pheromone on the edge
     	try:
-    		tmp = new[str(current)+str(neigh[candidate])]
+    		tmp = new[str(current)+','+str(neigh[candidate])]
     	except Exception, e:
-    		tmp = 0
+    		tmp = 1
     	new[str(self.current) + ','+str(neigh[candidate])] = tmp + self.increment
 
     	# update current node
@@ -252,6 +281,7 @@ class Ant():
     	result[index] = new
 
     def chooseNeighbour(self, probs): # Look at test.py 
+
     	try:
     		tmp = sum(probs)
     	except Exception, e:
@@ -267,12 +297,20 @@ class Ant():
     			return i
 	
     def hasReachedObjective(self):
+    	if len(self.path) > 15:
+    		return True
     	return self.current == self.objective
 	
     def returnToStart(self, pheromone):
+    	if len(self.path) > 15:
+    		return {'len':-1, 'pheromone':pheromone}
     	for pos in xrange(len(self.path)-1, 1, -1):
-    		pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] += self.increment
-    	return len(self.path)
+    		try:
+    			pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] += self.increment
+    		except Exception, e: # should never happen!
+    			pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] = 1 + self.increment
+	    		
+    	return {'len':len(self.path), 'pheromone':pheromone}
     	
 
 
