@@ -1,4 +1,4 @@
-@ONLINE{cheng,
+@article{cheng,
 author = {Cheng, Alex},
 title = {Six Degrees of Separation, Twitter Style},
 month = April,
@@ -17,8 +17,8 @@ url = {http://www.sysomos.com/insidetwitter/sixdegrees/}
     year = {1991}
 }
 
-@article{watts1998collective,
-  title={Collective dynamics of ?small-world?networks},
+@article{watts,
+  title={Collective dynamics of ``small-world'' networks},
   author={Watts, Duncan J and Strogatz, Steven H},
   journal={nature},
   volume={393},
@@ -26,4 +26,18 @@ url = {http://www.sysomos.com/insidetwitter/sixdegrees/}
   pages={440--442},
   year={1998},
   publisher={Nature Publishing Group}
+}
+
+@article{karinthy1929chain,
+  title={Chain-links},
+  author={Karinthy, Frigyes},
+  journal={Everything is the Other Way},
+  year={1929}
+}
+
+@article{angus,
+  title={Solving a unique Shortest Path problem using ant colony optimisation},
+  author={Angus, Daniel},
+  journal={Communicated by T. Baeck},
+  year={2005}
 }

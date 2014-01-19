@@ -12,13 +12,13 @@ from itertools import chain
 #			MAIN
 ###############################
 system_pheromone = 0
-def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.1, INCREMENT = 1, ANTS_PER_TURN = 10, MAX_EPOCH = 150):
+def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_PER_TURN = 5000, MAX_EPOCH = 20):
 
 	# Read the graph
 
-	#G = nx.read_gpickle("mutual.gpickle")
+	G = nx.read_gpickle("mutual.gpickle")
 	print 'Reading edges from file'
-	G = nx.read_edgelist(os.getcwd()+"/foursquare/edges.csv", delimiter=",", nodetype=int)
+	#G = nx.read_edgelist(os.getcwd()+"/foursquare/edges.csv", delimiter=",", nodetype=int)
 	print 'Graph loaded'
 	print 'Nodes: ', G.number_of_nodes()
 	
@@ -54,8 +54,8 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.1, INCREMENT = 1, ANTS_
 
 		print 'Finding path between ', str(start), 'and', str(end)
 
-		threads = [None] * NUM_ANTS
-		returned_matrices = [None] * NUM_ANTS
+		#threads = [None] * NUM_ANTS
+		#returned_matrices = [None] * NUM_ANTS
 		# Setup the ants (initialize the current_node param. & the objective)
 		ants = []
 		for a in range(0, ANTS_PER_TURN):
@@ -67,11 +67,11 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.1, INCREMENT = 1, ANTS_
 		ants_finish_last_turn = 0
 		# WHILE not (all ants reached the objective)
 		while epoch < MAX_EPOCH and len(ants) > 0:
-			if epoch%10 == 0:
-				print len(ants)
-				print epoch
-				print len(pheromone)
-				print '----'
+			#if epoch%10 == 0:
+			print len(ants)
+			print epoch
+			print len(pheromone)
+			print '----'
 			epoch += 1
 			a = len(ants)
 			tmp_counter = 0
@@ -85,17 +85,21 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.1, INCREMENT = 1, ANTS_
 
 			# Decrease the pheromone on each position (because of time) and maintain the system pheromone
 			pheromone = normalizePheromone(pheromone, DECAY, len(ants)+ants_finish_last_turn, INCREMENT)
-			pheromone_update = {}
+			pheromone_update = copy.deepcopy(pheromone)
 			# Run all the ants one step (concurrently?? -> be careful with writing to pheromone matrix -> use a temporal_matrix?)
 			for a in range(0, len(ants)):
-				threads[a] = Thread(target=ants[a].step, args=(pheromone, returned_matrices, a))
-				threads[a].start()
-
-			for a in range(len(ants)):
-				threads[a].join()
+				tmp = ants[a].step(pheromone)#, returned_matrices, a)
+				pheromone_update = dict(chain(pheromone_update.items(), tmp.items()))
 			
-			for i in range(len(ants)):
-				pheromone = combineDics(pheromone, returned_matrices[i])
+				#threads[a] = Thread(target=ants[a].step, args=(pheromone, returned_matrices, a))
+				#threads[a].start()
+
+			#for a in range(len(ants)):
+			#	threads[a].join()
+			
+			#for i in range(len(ants)):
+			#	pheromone = combineDics(pheromone, returned_matrices[i])
+			pheromone = dict(chain(pheromone.items(), pheromone_update.items()))
 			ants_finish_last_turn = 0
    			for a in xrange(len(ants)-1,0,-1):
 				if ants[a].hasReachedObjective():
@@ -113,8 +117,9 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.1, INCREMENT = 1, ANTS_
 							shortest_path = tmp_len
 						#pheromone = combineDics(pheromone, pheromone_update)
 					del(ants[a])
-					del(threads[a])
-					del(returned_matrices[a])
+					#del(threads[a])
+					#del(returned_matrices[a])
+					total_ants -= 1
 
 
 			# for a in range(0, len(ants)):
@@ -251,7 +256,7 @@ class Ant():
     def setObjective(self, objective):
     	self.objective = objective
 
-    def step(self, pheromone, result, index):
+    def step(self, pheromone):#, result, index):
 
     	# From the current node, decide which neighbour to choose using the weights of the edges as the probability of going in this direction	
     	neigh = []
@@ -278,7 +283,8 @@ class Ant():
     	self.current = neigh[candidate]
     	self.path.append(self.current)
     	# return the new weights
-    	result[index] = new
+    	return new
+    	#result[index] = new
 
     def chooseNeighbour(self, probs): # Look at test.py 
 

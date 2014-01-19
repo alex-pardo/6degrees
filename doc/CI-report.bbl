@@ -1,13 +1,19 @@
-\begin{thebibliography}{3}
+\begin{thebibliography}{5}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
+\bibitem[Angus(2005)]{angus}
+Daniel Angus.
+\newblock Solving a unique shortest path problem using ant colony optimisation.
+\newblock \emph{Communicated by T. Baeck}, 2005.
+
 \bibitem[Cheng(2010)]{cheng}
 Alex Cheng.
-\newblock Six degrees of separation, twitter style, 2010.
+\newblock Six degrees of separation, twitter style.
+\newblock 2010.
 \newblock URL \url{http://www.sysomos.com/insidetwitter/sixdegrees/}.
 
 \bibitem[Colorni et~al.(1991)Colorni, Dorigo, and Maniezzo]{Colorni91}
@@ -15,6 +21,11 @@ Alberto Colorni, Marco Dorigo, and Vittorio Maniezzo.
 \newblock {Distributed Optimization by Ant Colonies}.
 \newblock In \emph{European Conference on Artificial Life}, pages 134--142,
   1991.
+
+\bibitem[Karinthy(1929)]{karinthy1929chain}
+Frigyes Karinthy.
+\newblock Chain-links.
+\newblock \emph{Everything is the Other Way}, 1929.
 
 \bibitem[Watts and Strogatz(1998)]{watts}
 Duncan~J Watts and Steven~H Strogatz.
