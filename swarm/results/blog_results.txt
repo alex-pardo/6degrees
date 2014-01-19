@@ -1,0 +1,58 @@
+BlogCatalog
+Nodes:  10312
+Edges: 333983
+
+Finding path between  608 and 1740
+All ants ended
+Avg. path: 8.0
+Shortest path: 4
+---------
+Finding path between  8494 and 1806
+All ants ended
+Avg. path: 5.0
+Shortest path: 5
+---------
+Finding path between  3547 and 10239
+All ants ended
+Avg. path: 14.0
+Shortest path: 14
+---------
+Finding path between  8689 and 795
+All ants ended
+Avg. path: 9.0
+Shortest path: 6
+---------
+Finding path between  6735 and 4768
+All ants ended
+Avg. path: 5.0
+Shortest path: 5
+---------
+Finding path between  5495 and 5793
+All ants ended
+Avg. path: 9.0
+Shortest path: 9
+---------
+Finding path between  9461 and 10022
+All ants ended
+Avg. path: 4.0
+Shortest path: 4
+---------
+Finding path between  8085 and 1182
+All ants ended
+Avg. path: 10.0
+Shortest path: 10
+---------
+Finding path between  1615 and 1857
+All ants ended
+Avg. path: 10.5
+Shortest path: 8
+---------
+Finding path between  5997 and 9521
+All ants ended
+Avg. path: 5.0
+Shortest path: 5
+---------
+FINAL MEAN SHORTEST PATH: 7
+WITH STD. DEVIATION: 3.0659419433511785
+FINAL SHORTEST PATH 4
+[Finished in 3478.3s]
