@@ -97,7 +97,7 @@ As it is mentioned previously, we will use the ACO algorithm in order to obtain 
 \begin{figure}[htb!]
 \centering
 \includegraphics[width=0.6\textwidth]{img/aco}
-\caption{ACO algorithm}
+\caption[ACO algorithm]{ACO algorithm\protect\footnote{Credits to Johann Dréo, 27 may 2006}}
 \label{fig:aco}
 \end{figure}
 
@@ -159,13 +159,18 @@ BlogCatalog & ~ & ~ \\ \hline
 Dataset BlogCatalog from \citep{ZafaraniLiu}
 \section{Extensions, strengths and weaknesses}
 
-The need to choose a relative small dataset is a weakness of the our experiment and the our work. The method has high computational cost and the files of the big dataset are very heavy. We try to execute the algorithm in big datasets with standard personal computer but the algorithm should need very days of computation or better machines. The big problem does not reside in the code if not in the large dataset that the size is around the gigabytes. As a extension, could be very interesting if we can execute this code in these major datasets which contains millions of nodes. In the Internet you have access to these dataset in a easy way. However, with this small dataset we obtained better results and the method was strong in this type of datasets. So, we think that the algorithm can obtain better results in this large datasets but now we cannot be sure.
+The need to choose a relative small dataset is a weakness of the our experiment and the our work. The method has high computational cost and the files of the big dataset are very heavy. We try to execute the algorithm in big datasets with standard personal computer but the algorithm should need very days of computation or better machines. The big problem does not reside in the code if not in the large dataset that the size is around the gigabytes. As a extension, could be very interesting if we can execute this code in these major datasets which contains millions of nodes. In the Internet you have access to these dataset in a easy way. However, with this small dataset we obtained better results and the method was strong in this type of datasets. So, we think that the algorithm should obtain better results in this large datasets but now we cannot ensure.
 \\\par
 Other extension can be introducing more ants in the system. The number of the ants can be proportional to the size of the dataset and the large datasets can be use more ants than the small datasets. We could compared the influence of this parameter depend on the size the dataset and estimate the correct number to use it. Remember that our aim in this algorithm is not to find the better parameters of the Ant Colony Optimization problem in order to find the most optimal configuration. It is only a first approach to the six degree theory with ACO in order to see how this method works to obtain the degrees of separation.
 \\\par
 Finally we could modified the code in order to approximate more to the real case of the ants with the age in the ants that can be influence the capacity to follow the pheromone or introduce more realistic behaviour of the life (ants can be died with some probability).
 
 \section{Conclusions}
+To sum up, the algorithm of the Ant Colony Optimization works pretty well in order to obtain the degrees of the separation in these social networks dataset as the table of results shows. The difficulty to codify the algorithm is not harder but you can obtain better results. 
+\\\par
+Also, as the algorithm try to mimic a real case of the ants it is more easy to understand the steps and how the algorithm works because you have real cases in the nature. It curious as these animals that have limited capabilities and do not communicate between them, obtain the shortest path between two points. This type of behaviour is named by emergence system and more animals in the nature have this behaviour like birds, fishes or ants. 
+\\\par
+Finally, we took a wonderful experience and also we learned a lot about these methods based on the ants. However, we have a thorn stuck because we have not been able to execute this algorithm with a graph based on millions of the nodes but can be the next step to this project.
 
 \bibliography{bibliography.bib}
 
