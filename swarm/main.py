@@ -12,13 +12,15 @@ from itertools import chain
 #			MAIN
 ###############################
 system_pheromone = 0
-def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_PER_TURN = 5000, MAX_EPOCH = 20):
+normalization_factor = 1
+epoch = 0
+def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.01, INCREMENT = 1, ANTS_PER_TURN = 10, MAX_EPOCH = 500):
 
 	# Read the graph
 
 	G = nx.read_gpickle("mutual.gpickle")
 	print 'Reading edges from file'
-	#G = nx.read_edgelist(os.getcwd()+"/foursquare/edges.csv", delimiter=",", nodetype=int)
+	G = nx.read_edgelist(os.getcwd()+"/BlogCatalog/edges.csv", delimiter=",", nodetype=int)
 	print 'Graph loaded'
 	print 'Nodes: ', G.number_of_nodes()
 	
@@ -32,8 +34,10 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 
 	results = []
 	best_path = float('inf')
+	iterations_finished = 0
 	# REPEAT A CERTAIN NUMBER OF TIMES (to acquire mean results)
-	for iter in range(0, ITERATIONS):
+	#for iter in range(0, ITERATIONS):
+	while iterations_finished < ITERATIONS:
 
 		total_ants = 0
 		finished_ants = 0
@@ -48,8 +52,10 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 
 		# Setup start and end points
 		start = random.choice(G.nodes())
+		while G.neighbors(start) < 4:
+			start = random.choice(G.nodes())
 		end = start
-		while end == start:
+		while end == start or G.neighbors(end) < 4:
 			end = random.choice(G.nodes())
 
 		print 'Finding path between ', str(start), 'and', str(end)
@@ -63,15 +69,16 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 			ants[a].setStart(start)
 			ants[a].setObjective(end)
 			total_ants += 1
+		global epoch
 		epoch = 0
 		ants_finish_last_turn = 0
 		# WHILE not (all ants reached the objective)
 		while epoch < MAX_EPOCH and len(ants) > 0:
 			#if epoch%10 == 0:
-			print len(ants)
-			print epoch
-			print len(pheromone)
-			print '----'
+			# print len(ants)
+			# print epoch
+			# print len(pheromone)
+			# print '----'
 			epoch += 1
 			a = len(ants)
 			tmp_counter = 0
@@ -88,7 +95,7 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 			pheromone_update = copy.deepcopy(pheromone)
 			# Run all the ants one step (concurrently?? -> be careful with writing to pheromone matrix -> use a temporal_matrix?)
 			for a in range(0, len(ants)):
-				tmp = ants[a].step(pheromone)#, returned_matrices, a)
+				tmp = ants[a].step(pheromone, DECAY)#, returned_matrices, a)
 				pheromone_update = dict(chain(pheromone_update.items(), tmp.items()))
 			
 				#threads[a] = Thread(target=ants[a].step, args=(pheromone, returned_matrices, a))
@@ -109,7 +116,7 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 					if tmp_len > 0:
 						pheromone.update(tmp['pheromone'])
 						print 'ANT ENDS'
-						# print tmp_len
+						print tmp_len
 						ants_finish_last_turn += tmp_len
 						total_length += tmp_len
 						finished_ants += 1
@@ -144,8 +151,10 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 			if shortest_path < best_path:
 				best_path = shortest_path
 			results.append(shortest_path)
+			iterations_finished += 1
 		except Exception, e:
-			print 'None of the ants have finished :('
+			pass
+			#print 'None of the ants have finished :('
 		
 		
 		print '---------'
@@ -177,7 +186,8 @@ def normalizePheromone(pheromone, decay, num_ants, update):
 	#new = copy.deepcopy(pheromone)
 	new_pheromone = float(num_ants*update*(1-decay))
 	nu = (new_pheromone + system_pheromone) / float(system_pheromone)
-
+	global normalization_factor
+	normalization_factor = nu
 	pheromone.update((x, (y*(1-decay))/float(nu)) for x, y in pheromone.items())
 	return pheromone
 	# for key in pheromone.keys():
@@ -256,7 +266,7 @@ class Ant():
     def setObjective(self, objective):
     	self.objective = objective
 
-    def step(self, pheromone):#, result, index):
+    def step(self, pheromone, decay):#, result, index):
 
     	# From the current node, decide which neighbour to choose using the weights of the edges as the probability of going in this direction	
     	neigh = []
@@ -276,7 +286,7 @@ class Ant():
     	try:
     		tmp = new[str(current)+','+str(neigh[candidate])]
     	except Exception, e:
-    		tmp = 1
+    		tmp = ((1-decay)**epoch) / float(normalization_factor)
     	new[str(self.current) + ','+str(neigh[candidate])] = tmp + self.increment
 
     	# update current node

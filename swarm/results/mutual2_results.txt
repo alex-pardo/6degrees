@@ -1,0 +1,62 @@
+MUTUAL2
+ITERATIONS = 10, DECAY = 0.2, INCREMENT = 1, ANTS_PER_TURN = 3, MAX_EPOCH = 1000
+Nodes:  1146
+Edges: 1221
+
+Finding path between  31961301 and 127315965
+All ants ended
+Avg. path: 7.23937871174
+Shortest path: 3
+---------
+Finding path between  17842485 and 518388197
+All ants ended
+Avg. path: 7.0
+Shortest path: 7
+---------
+Finding path between  90410110 and 342017837
+All ants ended
+Avg. path: 8.0
+Shortest path: 3
+---------
+Finding path between  407201434 and 1558656798
+All ants ended
+Avg. path: 7.28090909091
+Shortest path: 3
+---------
+Finding path between  954514837 and 1028855810
+All ants ended
+Avg. path: 14.0
+Shortest path: 10
+---------
+Finding path between  313890427 and 718505125
+All ants ended
+Avg. path: 8.0
+Shortest path: 8
+---------
+Finding path between  364723035 and 239810334
+All ants ended
+Avg. path: 7.5687256
+Shortest path: 7
+---------
+Finding path between  57571700 and 22972969
+All ants ended
+Avg. path: 5.0
+Shortest path: 5
+---------
+Finding path between  504845296 and 598175891
+All ants ended
+Avg. path: 11.0
+Shortest path: 11
+---------
+Finding path between  136805370 and 56805505
+All ants ended
+Avg. path: 9.67573772
+Shortest path: 5
+---------
+FINAL MEAN SHORTEST PATH: 6.2
+WITH STD. DEVIATION: 2.7495454169735041
+FINAL SHORTEST PATH 3
+[Finished in 304.6s]
+
+
+
