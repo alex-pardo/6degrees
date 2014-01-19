@@ -1,4 +1,10 @@
-import networkx as nx
+'''
+Implementation of the Ant Colony Optimization problem to check the six degree theory in a network like Twitter or Foursquare.
+@autor: Alex Pardo Fernandez: alexpardo.5@gmail.com
+@autor: David Sanchez Pinsach: sdividis@gmail.com
+
+'''
+import networkx as nx  
 import copy
 import random
 import operator
@@ -8,28 +14,32 @@ import os
 from threading import Thread
 from itertools import chain
 
-###############################
-#			MAIN
-###############################
-system_pheromone = 0
+
+system_pheromone = 0 #Global variable of the pheromone in the system
+
+'''
+Main function that provides the degrees between two nodes
+@param NUM_ANTS: Maximum number of the ants in the system
+@param ITERATIONS: Number of the experiments
+@param DECAY: Factor of evaporation of the pheromones
+@param INCREMENT: Number of the increment of the pheromones
+@param ANTS_PER_TURN: Number of ants at each turn that appears
+@param MAX_EPOCH: Number of the iterations at each experiment
+'''    
 def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_PER_TURN = 5000, MAX_EPOCH = 20):
-
-	# Read the graph
-
+	
+    # Read the graph from a gpickle file
 	G = nx.read_gpickle("mutual.gpickle")
 	print 'Reading edges from file'
 	#G = nx.read_edgelist(os.getcwd()+"/foursquare/edges.csv", delimiter=",", nodetype=int)
 	print 'Graph loaded'
 	print 'Nodes: ', G.number_of_nodes()
 	
-	global system_pheromone
+	global system_pheromone #Declare a global property of the pheromone in the system
 	system_pheromone = G.number_of_edges()
 	print 'Edges:', system_pheromone
-	
-	
 
 	# Initialize vars
-
 	results = []
 	best_path = float('inf')
 	# REPEAT A CERTAIN NUMBER OF TIMES (to acquire mean results)
@@ -146,8 +156,6 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 			results.append(shortest_path)
 		except Exception, e:
 			print 'None of the ants have finished :('
-		
-		
 		print '---------'
 	# Get mean results
 	# edge_labels = {}
@@ -172,8 +180,8 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 1, DECAY = 0.1, INCREMENT = 1, ANTS_P
 	print 'FINAL SHORTEST PATH', best_path
 
 
+''' Method to normalize all pheromone in the system'''
 def normalizePheromone(pheromone, decay, num_ants, update):
-
 	#new = copy.deepcopy(pheromone)
 	new_pheromone = float(num_ants*update*(1-decay))
 	nu = (new_pheromone + system_pheromone) / float(system_pheromone)
@@ -184,7 +192,7 @@ def normalizePheromone(pheromone, decay, num_ants, update):
 	# 	new[key] = (pheromone[key] * (1-decay))/float(nu)
 	# return new
 
-
+''' Method to recover the path between two nodes'''
 def recoverPath(pheromone, start, objective):
 	current = start
 	visited = []
@@ -211,8 +219,8 @@ def recoverPath(pheromone, start, objective):
 			length += 1
 	return length
 
-		
 
+''' Method to get the mean value of the results''' 
 def getMean(results):
 	tmp = results
 	for i in range(len(tmp)-1, 0,-1):
@@ -220,10 +228,9 @@ def getMean(results):
 			del(tmp[i])
 	return sum(tmp) / float(len(tmp))
 
+''' Method to join dictionaries in one'''
 def combineDics(D1, D2):
-
 	D = dict(chain(D1.items(), D2.items()))
-
 	return D
 
 	# for new_value in D2.keys():
@@ -234,12 +241,11 @@ def combineDics(D1, D2):
 	# return D1
 		
 
-###############################
-#			ANT
-###############################			
-
-
+###############################	
+''' Ant class'''		
 class Ant():
+    
+    ''' Construct of the ant class'''
     def __init__(self, G, increment):
         self.start = 0
         self.objective = 0
@@ -247,18 +253,19 @@ class Ant():
         self.increment = increment
         self.path = []
         
+    '''Method to set the start node point'''
     def setStart(self, start):
     	self.start = start
     	self.current = start
     	self.path.append(self.start)
 
-
+    '''Method to set the objective node point'''
     def setObjective(self, objective):
     	self.objective = objective
-
+        
+    '''From the current node, decide which neighbour to choose using the
+    weights of the edges as the probability of going in this direction	'''
     def step(self, pheromone):#, result, index):
-
-    	# From the current node, decide which neighbour to choose using the weights of the edges as the probability of going in this direction	
     	neigh = []
     	probs = []
     	new = {}
@@ -269,8 +276,6 @@ class Ant():
     		except Exception, e:
     			probs.append(1)
     		
-    		
-
     	candidate = self.chooseNeighbour(probs)
     	# Leave a pheromone on the edge
     	try:
@@ -286,8 +291,8 @@ class Ant():
     	return new
     	#result[index] = new
 
+    '''Method to choose the neighbour step with certain probabilities'''
     def chooseNeighbour(self, probs): # Look at test.py 
-
     	try:
     		tmp = sum(probs)
     	except Exception, e:
@@ -302,23 +307,23 @@ class Ant():
     		if r <= (ranges[i]+probs[i]) and r > ranges[i]:
     			return i
 	
+    '''Method to check if the ant arrives to the objective or not'''
     def hasReachedObjective(self):
     	if len(self.path) > 15:
     		return True
     	return self.current == self.objective
 	
+    '''Method to return the ant to the initial point'''
     def returnToStart(self, pheromone):
     	if len(self.path) > 15:
     		return {'len':-1, 'pheromone':pheromone}
     	for pos in xrange(len(self.path)-1, 1, -1):
     		try:
     			pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] += self.increment
-    		except Exception, e: # should never happen!
-    			pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] = 1 + self.increment
-	    		
+    		except Exception, e: # Should never happen!
+    			pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] = 1 + self.increment		
     	return {'len':len(self.path), 'pheromone':pheromone}
     	
-
 
 main()
 

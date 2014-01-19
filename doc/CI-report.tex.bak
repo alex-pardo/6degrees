@@ -58,7 +58,7 @@ One of the most important features of humans and in general, of lots of animals,
 \\ \par
 The theory of the six degrees of separation was originally set out by Frigyes Karinthy \citep{karinthy1929chain} and explains that everyone is connected to any other person in the world by six degrees. That means, if you want to met someone in the world, you will need to pass by other five persons, as maximum, between you and your objective so the last one will be the one you are trying to reach. During these last decades, the six degree theory has been used in many fields like economy, social networks and markets and is a known property of small-world networks where most nodes are not neighbours of one another, but most nodes can be reached from every other by a small number of steps.
 \\\par
-Twitter is one of the biggest social networks, that is over 200 million users and over 400 million tweets (the 140 character messages that are the main feature of this social network) every day \footnote{Information by March of 2013: \href{https://blog.twitter.com/2013/celebrating-twitter7}{https://blog.twitter.com/2013/celebrating-twitter7}}. The main idea is to create shorts messages of the 140 characters in order to express your ideas or opinions in a shorten way. Moreover, Twitter have introduced some concepts that are very popular now such as the \emph{hash-tag} which is a way of tagging the messages i order to find all the related ones.
+Twitter is one of the biggest social networks, that is over 200 million users and over 400 million tweets (the 140 character messages that are the main feature of this social network) every day \footnote{Information by March of 2013: \href{https://blog.twitter.com/2013/celebrating-twitter7}{https://blog.twitter.com/2013/celebrating-twitter7}}. The main idea is to create shorts messages of the 140 characters in order to express your ideas or opinions in a shorten way. Moreover, Twitter have introduced some concepts that are very popular now such as the \emph{hash-tag} which is a way of tagging the messages in order to find all the related ones.
 
 Another famous social network is Foursquare, a social network related to places in which you activate the application and notifies your friends that you have been in that place. The most active users in one place achieve some goals such as being the ``major'' of a certain place. Foursquare has over 45 million users and over 3 billion check-ins every day \footnote{Information by January of 2014: \href{https://foursquare.com/about}{https://foursquare.com/about}}.
 \\\par
@@ -97,7 +97,8 @@ As it is mentioned previously, we will use the ACO algorithm in order to obtain 
 \begin{figure}[htb!]
 \centering
 \includegraphics[width=0.6\textwidth]{img/aco}
-\caption{ACO algorithm}
+\caption[ACO algorithm]%
+    {ACO algorithm\footnote{Credits to Johann Dréo, 27 may 2006}}
 \label{fig:aco}
 \end{figure}
 
@@ -121,11 +122,33 @@ Some considerations needed to take into account are the parameters of the algori
 % Number of epochs
 % - the number of epochs has to be taken into account using the number of ants on the system, the expected lentgh of the path and the computational time associated to the problem.
 % - num of ants -> if there are a lot of ants, the system will be slower but will converge earlier, if the number of ants is lower, we will have to increase the number of epochs in order to converge
-% - expected length of the path -> the number of epochs is expected to be greatest than the expected length of the shortest path since
+% - expected length of the path -> the number of epochs is expected to be greatest than the expected length of the shortest path since ants perform one step at each epoch.
+% - Computational time -> since we are working with huge graphs (3 million of nodes and 11 million of edges), the computational cost of the algorithm is crucial, and the greatest the number of epochs, the greatests the number of expaned nodes. As explained on \ref{implementation}, the pheromones saved are the ones in which the amount is increased, so when the number of expanded nodes increasesm the ammount of memory needed also increases.
 
 \section{Results and Discussion} % 1-2 pàgines de text
 
-In order to perform the tests we used two different datasets
+In order to perform the tests we used two different datasets and with different configuration of the execution. Remember as parameters the algorithm have the following:
+
+\begin{itemize}
+\item NUMBER OF THE ANTS: Maximum number of the ants in the system
+\item ITERATIONS: Number of the experiments
+\item DECAY: Factor of evaporation of the pheromones
+\item INCREMENT: Number of the pheromones that the ants leaves
+\item ANTS AT EACH TURN: Number of ants at each turn that appears
+\end{itemize}
+
+The next table \ref{datasets}, shows the number of the nodes and edges at each dataset.
+\begin{table}
+	\centering
+    \begin{tabular}{l|l|l}
+    ~ & Number of the nodes & Number of the edges \\ \hline
+    Twitter dataset     & ~                   & ~                   \\ \hline
+    Foursquare          & ~                   & ~                   \\ \hline
+    \end{tabular}
+    \caption{Table of the experimental dataset}
+    \label{datasets}
+\end{table}
+
 \section{Extensions, strengths and weaknesses}
 
 \section{Conclusions}
