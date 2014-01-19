@@ -1,6 +1,7 @@
 BlogCatalog
 Nodes:  10312
 Edges: 333983
+DECAY = 0.01, INCREMENT = 1, ANTS_PER_TURN = 50, MAX_EPOCH = 300:
 
 Finding path between  608 and 1740
 All ants ended
