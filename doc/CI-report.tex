@@ -107,11 +107,22 @@ Some considerations needed to take into account are the parameters of the algori
 % - set to 1
 % - since weights are always 1, the pheromone is always the same
 % - ants returning to the nest (start) leave pheromone also in the trail
+% - additionally as \citep{dorigo1999ant} says, the amount of pheromone of the system is kept fixed, so at each iteration it is normalized to always sum a value equal to the number of nodes.
 
 
 % Number of ants in the system
 % - on each epoch, some ants are introduced on the system this allows the new ants to follow the paths started by the ants on the previous epochs
-% - 
+% - as \citep{dorigo1999ant} says, the number of ants should be equal to the number of nodes. Not possible in big graphs such as the Foursquare one, so we reduced the number of ants and increased the number of epochs
+% - Once an ant is at distance 15 from the nest, we consider the ant has been lost so we do not follow it anymore (i.e. the ant is deleted from the system) this allows the code to run much more faster since we are only interested in shortest paths.
+
+% Dissipation of the pheromone
+% - disipation of pheromone allows the system to forget bad solutions in essence, bad solutions are long so the ants take longer to go from the nest to the food, the disipation allows the ants to explore aditional paths. Shortest paths also suffer the disipation but since are shorter, ants will arrive faster and the disipation will be compensated by the pheromone leaved
+
+% Number of epochs
+% - the number of epochs has to be taken into account using the number of ants on the system, the expected lentgh of the path and the computational time associated to the problem.
+% - num of ants -> if there are a lot of ants, the system will be slower but will converge earlier, if the number of ants is lower, we will have to increase the number of epochs in order to converge
+% - expected length of the path -> the number of epochs is expected to be greatest than the expected length of the shortest path since ants perform one step at each epoch.
+% - Computational time -> since we are working with huge graphs (3 million of nodes and 11 million of edges), the computational cost of the algorithm is crucial, and the greatest the number of epochs, the greatests the number of expaned nodes. As explained on \ref{implementation}, the pheromones saved are the ones in which the amount is increased, so when the number of expanded nodes increasesm the ammount of memory needed also increases.
 
 \section{Results and Discussion} % 1-2 pàgines de text
 

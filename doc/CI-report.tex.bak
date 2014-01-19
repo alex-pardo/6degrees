@@ -92,7 +92,7 @@ The previous work is based on these ideas:
 
 Swarm intelligence is a natural method based in the behaviour of the decentralized individuals who obtain solutions in some problem as result of their interactions. These agents normally are simple, with a few capabilities and follow simple rules. It includes ACO, flocking of the birds, bacterial grow or some on. 
 \\\\
-As it is mentioned previously, we will use the ACO algorithm in order to obtain the degree of separation of two random person in a graph. This algorithm is inspired on the way ants have to solve the problem of finding the best path to achieve a goal such as going from the nest to the found food. The ants cannot communicate with the others and only use the trace of pheromone as a probabilistic method in order to obtain the choice when they have different options. When a ant travels through two points it leaves a few of pheromone on t. The other ants around these points feel the pheromone and try to follow this path. The paths with few pheromone will have less probability than the path with high pheromone. As shows the figure \ref{fig:aco}, the ants converges to the shortest path between two points and this is the main characteristic of this method. We will use this idea of the shortest path between two points, as a minimum degree between two person in the Twitter network environment. In the appendix \ref{implementation}, it will show how the algorithm works in details.
+As it is mentioned previously, we will use the ACO algorithm in order to obtain the degree of separation of two random person in a graph. This algorithm is inspired on the way ants have to solve the problem of finding the best path to achieve a goal such as going from the nest to the found food. The ants cannot communicate with the others and only use the trace of pheromone as a probabilistic method in order to obtain the choice when they have different options. When a ant travels through two points it leaves a few of pheromone on the trail. The other ants around these points feel the pheromone and try to follow this path. The paths with few pheromone will have less probability than the path with high pheromone. As shows the figure \ref{fig:aco}, the path of the ants converge to the shortest path between two points and this is the main characteristic of this method. We will use this idea of the shortest path between two points, as a minimum degree between two person in Foursquare and Twitter networks. In the appendix \ref{implementation}, it will be shown how the algorithm works in details.
 
 \begin{figure}[htb!]
 \centering
@@ -100,6 +100,28 @@ As it is mentioned previously, we will use the ACO algorithm in order to obtain 
 \caption{ACO algorithm}
 \label{fig:aco}
 \end{figure}
+
+Some considerations needed to take into account are the parameters of the algorithm. These are: the amount of pheromone leaved by each ant, the number of ants of the system, the dissipation of the pheromone and the number of epochs the algorithm will run.
+
+% Amount of pheromone
+% - set to 1
+% - since weights are always 1, the pheromone is always the same
+% - ants returning to the nest (start) leave pheromone also in the trail
+% - additionally as \citep{dorigo1999ant} says, the amount of pheromone of the system is kept fixed, so at each iteration it is normalized to always sum a value equal to the number of nodes.
+
+
+% Number of ants in the system
+% - on each epoch, some ants are introduced on the system this allows the new ants to follow the paths started by the ants on the previous epochs
+% - as \citep{dorigo1999ant} says, the number of ants should be equal to the number of nodes. Not possible in big graphs such as the Foursquare one, so we reduced the number of ants and increased the number of epochs
+% - Once an ant is at distance 15 from the nest, we consider the ant has been lost so we do not follow it anymore (i.e. the ant is deleted from the system) this allows the code to run much more faster since we are only interested in shortest paths.
+
+% Dissipation of the pheromone
+% - disipation of pheromone allows the system to forget bad solutions in essence, bad solutions are long so the ants take longer to go from the nest to the food, the disipation allows the ants to explore aditional paths. Shortest paths also suffer the disipation but since are shorter, ants will arrive faster and the disipation will be compensated by the pheromone leaved
+
+% Number of epochs
+% - the number of epochs has to be taken into account using the number of ants on the system, the expected lentgh of the path and the computational time associated to the problem.
+% - num of ants -> if there are a lot of ants, the system will be slower but will converge earlier, if the number of ants is lower, we will have to increase the number of epochs in order to converge
+% - expected length of the path -> the number of epochs is expected to be greatest than the expected length of the shortest path since
 
 \section{Results and Discussion} % 1-2 pàgines de text
 
