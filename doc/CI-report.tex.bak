@@ -54,7 +54,7 @@ Swarm Intelligence, Ant Colony Optimization, Twitter, Degrees of Separation.
 %\item You should cite all relevant references, including your own.
 %\end{itemize}}
 \par
-One of the most important features of humans and in general, of lots of animals, is the sociability. The ability of communicating each other in order to share knowledge. Human social relationships form a network where everyone is connected with those that communicates often (considered as fiends). 
+One of the most important features of humans and in general, of lots of animals, is the sociability. The ability of communicating each other in order to share knowledge. Human social relationships form a network where everyone is connected with those that communicates often (considered as friends). 
 \\ \par
 The theory of the six degrees of separation was originally set out by Frigyes Karinthy \citep{karinthy1929chain} and explains that everyone is connected to any other person in the world by six degrees. That means, if you want to met someone in the world, you will need to pass by other five persons, as maximum, between you and your objective so the last one will be the one you are trying to reach. During these last decades, the six degree theory has been used in many fields like economy, social networks and markets and is a known property of small-world networks where most nodes are not neighbours of one another, but most nodes can be reached from every other by a small number of steps.
 \\\par
@@ -75,7 +75,6 @@ The main objective of this work will be to estimate the degrees of separation in
 %\end{enumerate}
 
 
-\newpage
 
 \section{Previous work} % 2 pàgines
 
@@ -127,10 +126,44 @@ Some considerations needed to take into account are the parameters of the algori
 
 \section{Results and Discussion} % 1-2 pàgines de text
 
-In order to perform the tests we used two different datasets
+In order to perform the tests we used three different datasets and with different configuration of the execution. Remember as parameters the algorithm have the following:
+
+\begin{table}
+\centering
+\begin{tabular}{l|l}
+\hline
+NUM\_ANTS & Maximum number of the ants in the system \\ \hline
+ITERATIONS & Number of the experiments \\ \hline
+DECAY & Factor of evaporation of the pheromones \\ \hline
+INCREMENT & Number of the increment of the pheromones \\ \hline
+ANTS\_PER\_TURN & Number of ants at each turn that appears \\ \hline
+MAX\_EPOCH & Number of the iterations at each experiment \\ \hline
+\end{tabular}
+\caption{Table of the parameters description of the algorithm}
+\label{parameters}
+\end{table}
+
+The next table \ref{datasets}, shows the number of the nodes and edges at each dataset.
+\begin{table}
+\centering
+\begin{tabular}{l|l|l}
+~ & Number of the nodes & Number of the edges \\ \hline
+Twitter & ~ & ~ \\ \hline
+Twitter & ~ & ~ \\ \hline
+BlogCatalog & ~ & ~ \\ \hline
+\end{tabular}
+\caption{Table of the experimental dataset}
+\label{datasets}
+\end{table}
 
 Dataset BlogCatalog from \citep{ZafaraniLiu}
 \section{Extensions, strengths and weaknesses}
+
+The need to choose a relative small dataset is a weakness of the our experiment and the our work. The method has high computational cost and the files of the big dataset are very heavy. We try to execute the algorithm in big datasets with standard personal computer but the algorithm should need very days of computation or better machines. The big problem does not reside in the code if not in the large dataset that the size is around the gigabytes. As a extension, could be very interesting if we can execute this code in these major datasets which contains millions of nodes. In the Internet you have access to these dataset in a easy way. However, with this small dataset we obtained better results and the method was strong in this type of datasets. So, we think that the algorithm can obtain better results in this large datasets but now we cannot be sure.
+\\\par
+Other extension can be introducing more ants in the system. The number of the ants can be proportional to the size of the dataset and the large datasets can be use more ants than the small datasets. We could compared the influence of this parameter depend on the size the dataset and estimate the correct number to use it. Remember that our aim in this algorithm is not to find the better parameters of the Ant Colony Optimization problem in order to find the most optimal configuration. It is only a first approach to the six degree theory with ACO in order to see how this method works to obtain the degrees of separation.
+\\\par
+Finally we could modified the code in order to approximate more to the real case of the ants with the age in the ants that can be influence the capacity to follow the pheromone or introduce more realistic behaviour of the life (ants can be died with some probability).
 
 \section{Conclusions}
 
@@ -149,11 +182,17 @@ We based the code in the next basic pseudo-code algorithm of the ACO:
 ¡put here pseudocode!
 \\
 Next to the pseudo-code we want to enter a few detail of some parts of the code and how this parts had been coded.
-\begin{itemize}
-\item \textbf{Pheromone}: The pheromone is the most important part of the our problem and our code. Remember that the ants try to follow the path which contain high quantity of pheromone. However the pheromone effect disappears with the time. For this reason, the algorithm need to define two parameters in order to determine the quantity of the pheromone that leaves the ant and the quantity of the pheromone disappears at each turn.
 
-\item \textbf{Start and final points of the ants}: We select always randomly the start and the final point of the ants using the standard Random methods of the python.
+\begin{itemize}
+\item \textbf{Pheromone}: The pheromone is the most important part of the our problem and our code. Remember that the ants try to follow the path which contain high quantity of pheromone. However the pheromone effect disappears with the time. For this reason, the algorithm need to define two parameters in order to determine the quantity of the pheromone that leaves the ant and the quantity of the pheromone disappears at each turn. The table \ref{parameters} explain both parameters in detail.
+
+\item \textbf{Start and final points of the ants}: The algorithm selects always randomly the start and the final point of the ants using the standard random methods of the python library.
+
+\item \textbf{Ants at each turn}: The algorithm does not start with all the ants in the start point. At each turn, the algorithm add more ants in the start point.
+
 \end{itemize}
+
+
 
 \end{document}
 
