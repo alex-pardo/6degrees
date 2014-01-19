@@ -126,7 +126,9 @@ Some considerations needed to take into account are the parameters of the algori
 
 \section{Results and Discussion} % 1-2 pàgines de text
 
-In order to perform the tests we used three different datasets and with different configuration of the execution. Remember as parameters the algorithm have the following:
+In order to perform the tests we used three different datasets. The first ones are a subset of Twitter network. The third one has been obtained from \citep{ZafaraniLiu} and is based on BlogCatalog network.
+\par
+Each dataset has been used changing the parameters of the algorithm in order to get the shortest path using the less computational resources. This parameters have been experimentally set.
 
 \begin{table}
 \centering
@@ -144,19 +146,125 @@ MAX\_EPOCH & Number of the iterations at each experiment \\ \hline
 \end{table}
 
 The next table \ref{datasets}, shows the number of the nodes and edges at each dataset.
-\begin{table}
+\begin{table}[htb!]
 \centering
-\begin{tabular}{l|l|l}
-~ & Number of the nodes & Number of the edges \\ \hline
-Twitter & ~ & ~ \\ \hline
-Twitter & ~ & ~ \\ \hline
-BlogCatalog & ~ & ~ \\ \hline
+\begin{tabular}{l|c|c}
+~ & Number of nodes & Number of edges \\ \hline
+Twitter(1) & 1146 & 1221 \\ 
+Twitter(2) & 5691 & 6220 \\ 
+BlogCatalog & 10312 & 333983 \\ \hline
 \end{tabular}
 \caption{Table of the experimental dataset}
 \label{datasets}
 \end{table}
 
-Dataset BlogCatalog from \citep{ZafaraniLiu}
+
+\subsection{First dataset}
+
+In Figure %\ref{fig:graph1}, 
+one can see the graph plotted.
+
+The parameters used for this graph are: 
+\begin{itemize}
+\item 10 Iterations
+\item Increment of pheromone = 1
+\item Decay of pheromone = 0.2
+\item 3 ants introduced on each epoch
+\item Maximum of 1000 epochs
+\end{itemize}
+
+In Table \ref{table:graph1} the results obtained are showed. Finally, the \textbf{mean of the shortest path is 6.2} with standard deviation of 2.74.
+
+\begin{table}[htb!]
+\centering
+\begin{tabular}{c|c|c}
+Iteration	&	Shortest path	& Average path	\\ \hline
+1			&	3				& 	7.23			\\
+2			&	7				& 	7			\\
+3			&	3				& 	8			\\
+4			&	3				& 	7.28			\\
+5			&	10				& 	14			\\
+6			&	8				& 	8			\\
+7			&	7				& 	7.56			\\
+8			&	5				& 	5			\\
+9			&	11				& 	11			\\
+10			&	5				& 	9.6			\\
+\end{tabular}
+\caption{Results of the first graph}
+\label{table:graph1}
+\end{table}
+
+\subsection{Second dataset}
+
+In Figure %\ref{fig:graph2}, 
+one can see the graph plotted.
+
+The parameters used for this graph are: 
+\begin{itemize}
+\item 10 Iterations
+\item Increment of pheromone = 1
+\item Decay of pheromone = 0.01
+\item 5 ants introduced on each epoch
+\item Maximum of 500 epochs
+\end{itemize}
+
+In Table \ref{table:graph2} the results obtained are showed. Finally, the \textbf{mean of the shortest path is 7.5} with standard deviation of 2.7.
+
+\begin{table}[htb!]
+\centering
+\begin{tabular}{c|c|c}
+Iteration	&	Shortest path	& Average path	\\ \hline
+1			&	5				& 	10.17		\\
+2			&	3				& 	8.61			\\
+3			&	4				& 	10.23		\\
+4			&	11				& 	12.5			\\
+5			&	9				& 	9			\\
+6			&	8				& 	10			\\
+7			&	9				& 	9			\\
+8			&	11				& 	12.46		\\
+9			&	6				& 	6			\\
+10			&	9				& 	9			\\
+\end{tabular}
+\caption{Results of the second graph}
+\label{table:graph2}
+\end{table}
+
+\subsection{Third dataset}
+
+In Figure %\ref{fig:graph3}, 
+one can see the graph plotted.
+
+The parameters used for this graph are: 
+\begin{itemize}
+\item 10 Iterations
+\item Increment of pheromone = 1
+\item Decay of pheromone = 0.01
+\item 50 ants introduced on each epoch
+\item Maximum of 300 epochs
+\end{itemize}
+
+In Table \ref{table:graph3} the results obtained are showed. Finally, the \textbf{mean of the shortest path is 7} with standard deviation of 3.06.
+
+\begin{table}[htb!]
+\centering
+\begin{tabular}{c|c|c}
+Iteration	&	Shortest path	& Average path	\\ \hline
+1			&	4				& 	8			\\
+2			&	5				& 	5			\\
+3			&	14				& 	14			\\
+4			&	6				& 	9			\\
+5			&	5				& 	5			\\
+6			&	9				& 	9			\\
+7			&	4				& 	4			\\
+8			&	10				& 	10			\\
+9			&	8				& 	10.5			\\
+10			&	5				& 	5			\\
+\end{tabular}
+\caption{Results of the third graph}
+\label{table:graph3}
+\end{table}
+
+
 \section{Extensions, strengths and weaknesses}
 
 The need to choose a relative small dataset is a weakness of the our experiment and the our work. The method has high computational cost and the files of the big dataset are very heavy. We try to execute the algorithm in big datasets with standard personal computer but the algorithm should need very days of computation or better machines. The big problem does not reside in the code if not in the large dataset that the size is around the gigabytes. As a extension, could be very interesting if we can execute this code in these major datasets which contains millions of nodes. In the Internet you have access to these dataset in a easy way. However, with this small dataset we obtained better results and the method was strong in this type of datasets. So, we think that the algorithm also should obtain better results in this large datasets but we cannot ensure now.
