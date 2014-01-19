@@ -90,9 +90,9 @@ The previous work is based on these ideas:
 
 \section{The CI methods} % 3-4 pàgines
 
-Swarm intelligence is a natural method based in the behaviour of the decentralized individuals who obtain solutions in some problem as result of their interactions. These agents normally are simple, with a few capabilities and follow simple rules. It includes ant colony optimization, flocking of the birds, bacterial grow or some on. 
+Swarm intelligence is a natural method based in the behaviour of the decentralized individuals who obtain solutions in some problem as result of their interactions. These agents normally are simple, with a few capabilities and follow simple rules. It includes ACO, flocking of the birds, bacterial grow or some on. 
 \\\\
-As it mention previously, it will use the Ant Colony Optimization algorithm in order to obtain the degree of separation of two random person. In this type of algorithm the individuals are the ants who have few capabilities. The ants cannot communicate with the others and only use the trace of pheromone as a probabilistic method in order to obtain the choice when they have different options. When a ant travels although the two points it leaves a few of pheromone. The other ants around these points feel the pheromone and try to follow this path. The paths with few pheromone will have less probability than the path with high pheromone. As shows the figure \ref{fig:aco}, the ants converges to the shortest path between two points and this is the main characteristic of this method. We will use this idea of the shortest path between two points, as a minimum degree between two person in the Twitter network environment. In the appendix \ref{implementation}, it will show how the algorithm works in details.
+As it is mentioned previously, we will use the ACO algorithm in order to obtain the degree of separation of two random person in a graph. This algorithm is inspired on the way ants have to solve the problem of finding the best path to achieve a goal such as going from the nest to the found food. The ants cannot communicate with the others and only use the trace of pheromone as a probabilistic method in order to obtain the choice when they have different options. When a ant travels through two points it leaves a few of pheromone on the trail. The other ants around these points feel the pheromone and try to follow this path. The paths with few pheromone will have less probability than the path with high pheromone. As shows the figure \ref{fig:aco}, the path of the ants converge to the shortest path between two points and this is the main characteristic of this method. We will use this idea of the shortest path between two points, as a minimum degree between two person in Foursquare and Twitter networks. In the appendix \ref{implementation}, it will be shown how the algorithm works in details.
 
 \begin{figure}[htb!]
 \centering
@@ -100,6 +100,18 @@ As it mention previously, it will use the Ant Colony Optimization algorithm in o
 \caption{ACO algorithm}
 \label{fig:aco}
 \end{figure}
+
+Some considerations needed to take into account are the parameters of the algorithm. These are: the amount of pheromone leaved by each ant, the number of ants of the system, the dissipation of the pheromone and the number of epochs the algorithm will run.
+
+% Amount of pheromone
+% - set to 1
+% - since weights are always 1, the pheromone is always the same
+% - ants returning to the nest (start) leave pheromone also in the trail
+
+
+% Number of ants in the system
+% - on each epoch, some ants are introduced on the system this allows the new ants to follow the paths started by the ants on the previous epochs
+% - 
 
 \section{Results and Discussion} % 1-2 pàgines de text
 
