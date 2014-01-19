@@ -1,4 +1,4 @@
-\begin{thebibliography}{5}
+\begin{thebibliography}{6}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -31,5 +31,10 @@ Frigyes Karinthy.
 Duncan~J Watts and Steven~H Strogatz.
 \newblock Collective dynamics of ``small-world'' networks.
 \newblock \emph{nature}, 393\penalty0 (6684):\penalty0 440--442, 1998.
+
+\bibitem[Zafarani and Liu(2009)]{ZafaraniLiu}
+R.~Zafarani and H.~Liu.
+\newblock Social computing data repository at {ASU}, 2009.
+\newblock URL \url{http://socialcomputing.asu.edu}.
 
 \end{thebibliography}

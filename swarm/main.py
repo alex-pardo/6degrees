@@ -29,7 +29,7 @@ Main function that provides the degrees between two nodes
 @param MAX_EPOCH: Number of the iterations at each experiment
 '''    
 
-def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.01, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 500):
+def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS_PER_TURN = 5, MAX_EPOCH = 100):
 	
     # Read the graph from a gpickle file
 	G = nx.read_gpickle("mutual.gpickle")
@@ -63,10 +63,10 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.01, INCREMENT = 1, ANTS
 
 		# Setup start and end points
 		start = random.choice(G.nodes())
-		while G.neighbors(start) < 4:
+		while G.neighbors(start) < 7:
 			start = random.choice(G.nodes())
 		end = start
-		while end == start or G.neighbors(end) < 4:
+		while end == start or G.neighbors(end) < 7:
 			end = random.choice(G.nodes())
 
 		print 'Finding path between ', str(start), 'and', str(end)
@@ -83,11 +83,12 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.01, INCREMENT = 1, ANTS
 		global epoch
 		epoch = 0
 		ants_finish_last_turn = 0
+		ants_end = 0
 		# WHILE not (all ants reached the objective)
-		while epoch < MAX_EPOCH and len(ants) > 0:
-			#if epoch%10 == 0:
+		while (epoch < MAX_EPOCH and len(ants) > 0) or ants_end == 0:
+			#if epoch%30 == 0:
 			# print len(ants)
-			# print epoch
+			#print epoch
 			# print len(pheromone)
 			# print '----'
 			epoch += 1
@@ -126,8 +127,8 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.01, INCREMENT = 1, ANTS
 					tmp_len = tmp['len']
 					if tmp_len > 0:
 						pheromone.update(tmp['pheromone'])
-						print 'ANT ENDS'
-						print tmp_len
+						#print 'ANT ENDS'
+						# print tmp_len
 						ants_finish_last_turn += tmp_len
 						total_length += tmp_len
 						finished_ants += 1
@@ -138,6 +139,7 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 10, DECAY = 0.01, INCREMENT = 1, ANTS
 					#del(threads[a])
 					#del(returned_matrices[a])
 					total_ants -= 1
+					ants_end += 1
 
 
 			# for a in range(0, len(ants)):

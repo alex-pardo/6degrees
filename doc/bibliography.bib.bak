@@ -52,3 +52,11 @@ url = {http://www.sysomos.com/insidetwitter/sixdegrees/}
   year={1999},
   publisher={MIT Press}
 }
+
+@misc{ZafaraniLiu,
+author = {R. Zafarani and H. Liu},
+year = {2009},
+title = {Social Computing Data Repository at {ASU}},
+url = {http://socialcomputing.asu.edu},
+institution = {Arizona State University, School of Computing, Informatics and Decision Systems Engineering}
+}
