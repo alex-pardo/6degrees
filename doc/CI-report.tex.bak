@@ -40,7 +40,9 @@
 \maketitle
 
 \begin{abstract}
-This is a great project and therefore it has a concise abstract.
+The six degree of separation is the most popular theory in social networks. Exists a large number of algorithm that tries to check this theory in a different types of networks. Otherwise, the Ant Colony Optimization is an approach of a computational intelligence method based on the swarm intelligence. Small individuals ants with few capabilities do a emerge behaviour able to find the shortest path between two points.
+
+The next project try to join these two concepts: the six degree of separation as a Ant Colony Optimization problem in one. We will code the algorithm and to see how this algorithm works in a two socials networks like Twitter and BlogCatalog.
 \end{abstract}
 
 \begin{keywords}
@@ -163,8 +165,14 @@ BlogCatalog & 10312 & 333983 \\ \hline
 
 \subsection{First dataset}
 
-In Figure %\ref{fig:graph1}, 
-one can see the graph plotted.
+In Figure \ref{fig:graph1}, one can see the graph plotted.
+
+\begin{figure}[htb!]
+\centering
+\includegraphics[scale=0.3]{img/m1.png}
+\label{fig:graph1}
+\caption{First graph used}
+\end{figure}
 
 The parameters used for this graph are: 
 \begin{itemize}
@@ -198,8 +206,14 @@ Execution	&	Shortest path	& Average path	\\ \hline
 
 \subsection{Second dataset}
 
-In Figure %\ref{fig:graph2}, 
-one can see the graph plotted.
+In Figure \ref{fig:graph2}, one can see the graph plotted.
+
+\begin{figure}[htb!]
+\centering
+\includegraphics[scale=0.3]{img/m2.png}
+\label{fig:graph2}
+\caption{Second graph used}
+\end{figure}
 
 The parameters used for this graph are: 
 \begin{itemize}
@@ -233,8 +247,14 @@ Execution	&	Shortest path	& Average path	\\ \hline
 
 \subsection{Third dataset}
 
-In Figure %\ref{fig:graph3}, 
-one can see the graph plotted.
+In Figure \ref{fig:graph3}, one can see the graph plotted.
+
+\begin{figure}[htb!]
+\centering
+\includegraphics[scale=0.3]{img/big.png}
+\label{fig:graph3}
+\caption{Third graph used}
+\end{figure}
 
 The parameters used for this graph are: 
 \begin{itemize}
@@ -250,11 +270,7 @@ In Table \ref{table:graph3} the results obtained are showed. Finally, the \textb
 \begin{table}[htb!]
 \centering
 \begin{tabular}{c|c|c}
-<<<<<<< HEAD
 Execution	&	Shortest path	& Average path	\\ \hline
-=======
-Iteration	&	Shortest path	& Average path	\\ \hline
->>>>>>> 27793b7580af1bc861b187ca93aed73c37cb79ed
 1			&	4				& 	8			\\
 2			&	5				& 	5			\\
 3			&	14				& 	14			\\
@@ -270,7 +286,6 @@ Iteration	&	Shortest path	& Average path	\\ \hline
 \label{table:graph3}
 \end{table}
 
-<<<<<<< HEAD
 \subsection{Discussion of results}
 The Different tables of results \ref{table:graph1}, \ref{table:graph2}, \ref{table:graph3} show several execution in order to get more realistic results. The parameters of the execution change between the different dataset in order to get better results depending on the type of the dataset. For example, the number of the ants that the algorithm introduces at each turn depends a lot on the size of the graph and we decide to increment the ants in a huge graph than the small.
 \\\par
@@ -283,11 +298,6 @@ We executed our code with third dataset and in contrast on the other dataset tha
 All the datasets have similar standard deviation and exist few variation or dispersion from the average results. Remember that a low standard deviation means that the data points tend to be very close to the expected value or mean.
 
 Finally, we think that the configuration of the different parameters has in the most case very impact and it is difficult to determine which are the best. A most important parameters are the number of the ants that the system introduces at each turn. This parameter as the different tables of results shows, is very important because with a huge dataset you will need more ants than the small. 
-=======
-\subsection{Discussion}
-
-The results obtained are quite good. We are not able to reproduce the small world property in our graphs.
->>>>>>> 27793b7580af1bc861b187ca93aed73c37cb79ed
 
 \section{Extensions, strengths and weaknesses}
 
@@ -331,11 +341,13 @@ Next to the pseudo-code we want to enter a few detail of some parts of the code 
 \begin{itemize}
 \item \textbf{Ants}: The main python script provides a ant class in order to encapsulate all the concepts of the ant in a class. As attributes this class have the path, the start point, the final point and increment of the pheromones. The class also has some methods in order to provide some capabilities in the ants like setStart(), setObjective(), step(), chooseNeighbour(), hasReachedObjective() and returnToStart().
 
-\item \textbf{Pheromone}: The pheromone is the most important part of the our problem and our code. Remember that the ants try to follow the path which contain high quantity of pheromone. However the pheromone effect disappears with the time. For this reason, the algorithm need to define two parameters in order to determine the quantity of the pheromone that leaves the ant and the quantity of the pheromone disappears at each turn. The table \ref{parameters} explain both parameters in detail. The normalized the pheromones in the system in order that in all epochs have the same quantity of pheromone. For do this task we use a global system pheromone parameter.
+\item \textbf{Pheromone}: The pheromone is the most important part of the our problem and our code. Remember that the ants try to follow the path which contain high quantity of pheromone. However the pheromone effect disappears with the time. For this reason, the algorithm need to define two parameters in order to determine the quantity of the pheromone that leaves the ant and the quantity of the pheromone disappears at each turn. The table \ref{parameters} explains both parameters in detail. The normalized the pheromones in the system in order that in all epochs have the same quantity of pheromone. For do this task we use a global system pheromone parameter. 
+
+\item \textbf{Choice the next nodes}: We use a probabilistic method to obtain the next node at each turn. The different options can have pheromone and the sum of pheromone of the all options are one. We build and array with a size N based on the probabilities of the all options. The next step is randomly selects some cell of the array and check which option of the path is.
 
 \item \textbf{Start and final points of the ants}: The algorithm selects always randomly the start and the final point of the ants using the standard random methods of the python library.
 
-\item \textbf{Ants at each turn}: The algorithm does not start with all the ants in the start point. At each turn, the algorithm add more ants in the start point.
+\item \textbf{Ants at each turn}: The algorithm does not start with all the ants in the start point. At each turn, the algorithm add more ants in the start point. Also, we add a parameter named \emph{NUM\_ANTS} to control the maximum number of the ants in the whole system.
 
 \end{itemize}
 

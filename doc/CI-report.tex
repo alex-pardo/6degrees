@@ -40,7 +40,9 @@
 \maketitle
 
 \begin{abstract}
-This is a great project and therefore it has a concise abstract.
+The six degree of separation is the most popular theory in social networks. Exists a large number of algorithm that tries to check this theory in a different types of networks. Otherwise, the Ant Colony Optimization is an approach of a computational intelligence method based on the swarm intelligence. Small individuals ants with few capabilities do a emerge behaviour able to find the shortest path between two points.
+
+The next project try to join these two concepts: the six degree of separation as a Ant Colony Optimization problem in one. We will code the algorithm and to see how this algorithm works in a two socials networks like Twitter and BlogCatalog.
 \end{abstract}
 
 \begin{keywords}
@@ -341,9 +343,11 @@ Next to the pseudo-code we want to enter a few detail of some parts of the code 
 
 \item \textbf{Pheromone}: The pheromone is the most important part of the our problem and our code. Remember that the ants try to follow the path which contain high quantity of pheromone. However the pheromone effect disappears with the time. For this reason, the algorithm need to define two parameters in order to determine the quantity of the pheromone that leaves the ant and the quantity of the pheromone disappears at each turn. The table \ref{parameters} explains both parameters in detail. The normalized the pheromones in the system in order that in all epochs have the same quantity of pheromone. For do this task we use a global system pheromone parameter. 
 
+\item \textbf{Choice the next nodes}: We use a probabilistic method to obtain the next node at each turn. The different options can have pheromone and the sum of pheromone of the all options are one. We build and array with a size N based on the probabilities of the all options. The next step is randomly selects some cell of the array and check which option of the path is. The ants should be follow this option in this turn.
+
 \item \textbf{Start and final points of the ants}: The algorithm selects always randomly the start and the final point of the ants using the standard random methods of the python library.
 
-\item \textbf{Ants at each turn}: The algorithm does not start with all the ants in the start point. At each turn, the algorithm add more ants in the start point.
+\item \textbf{Ants at each turn}: The algorithm does not start with all the ants in the start point. At each turn, the algorithm add more ants in the start point. Also, we add a parameter named \emph{NUM\_ANTS} to control the maximum number of the ants in the whole system.
 
 \end{itemize}
 
