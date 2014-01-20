@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.2.20)  20 JAN 2014 13:05
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.2.20)  20 JAN 2014 13:09
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -567,7 +567,7 @@ Here is how much of TeX's memory you used:
  12149 multiletter control sequences out of 15000+200000
  11228 words of font info for 42 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 42i,12n,39p,1056b,396s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 42i,12n,39p,1058b,396s stack positions out of 5000i,500n,10000p,200000b,50000s
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exi
 st, replaced by a fixed one
 
@@ -581,7 +581,7 @@ cal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local
 /texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
 texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/t
 exlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on CI-report.pdf (11 pages, 1528864 bytes).
+Output written on CI-report.pdf (11 pages, 1528872 bytes).
 PDF statistics:
  251 PDF objects out of 1000 (max. 8388607)
  217 compressed objects within 3 object streams
