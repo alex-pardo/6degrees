@@ -250,7 +250,11 @@ In Table \ref{table:graph3} the results obtained are showed. Finally, the \textb
 \begin{table}[htb!]
 \centering
 \begin{tabular}{c|c|c}
+<<<<<<< HEAD
 Execution	&	Shortest path	& Average path	\\ \hline
+=======
+Iteration	&	Shortest path	& Average path	\\ \hline
+>>>>>>> 27793b7580af1bc861b187ca93aed73c37cb79ed
 1			&	4				& 	8			\\
 2			&	5				& 	5			\\
 3			&	14				& 	14			\\
@@ -266,6 +270,7 @@ Execution	&	Shortest path	& Average path	\\ \hline
 \label{table:graph3}
 \end{table}
 
+<<<<<<< HEAD
 \subsection{Discussion of results}
 The Different tables of results \ref{table:graph1}, \ref{table:graph2}, \ref{table:graph3} show several execution in order to get more realistic results. The parameters of the execution change between the different dataset in order to get better results depending on the type of the dataset. For example, the number of the ants that the algorithm introduces at each turn depends a lot on the size of the graph and we decide to increment the ants in a huge graph than the small.
 \\\par
@@ -278,6 +283,11 @@ We executed our code with third dataset and in contrast on the other dataset tha
 All the datasets have similar standard deviation and exist few variation or dispersion from the average results. Remember that a low standard deviation means that the data points tend to be very close to the expected value or mean.
 
 Finally, we think that the configuration of the different parameters has in the most case very impact and it is difficult to determine which are the best. A most important parameters are the number of the ants that the system introduces at each turn. This parameter as the different tables of results shows, is very important because with a huge dataset you will need more ants than the small. 
+=======
+\subsection{Discussion}
+
+The results obtained are quite good. We are not able to reproduce the small world property in our graphs.
+>>>>>>> 27793b7580af1bc861b187ca93aed73c37cb79ed
 
 \section{Extensions, strengths and weaknesses}
 
