@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.2.20)  20 JAN 2014 13:09
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.2.20)  20 JAN 2014 13:15
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -442,71 +442,66 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--38
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 62--63
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 64--65
 
  []
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 66.
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--67
+
+ []
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 68.
 (/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 66.
+LaTeX Font Info:    Try loading font information for U+msb on input line 68.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 ) [1{/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 69--70
+Underfull \hbox (badness 10000) in paragraph at lines 71--72
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 95--98
+Underfull \hbox (badness 10000) in paragraph at lines 97--100
 
  []
 
 [2] <img/aco.png, id=105, 803.0pt x 602.25pt>
 File: img/aco.png Graphic file (type png)
  <use img/aco.png>
-Package pdftex.def Info: img/aco.png used on input line 101.
+Package pdftex.def Info: img/aco.png used on input line 103.
 (pdftex.def)             Requested size: 321.1943pt x 240.89572pt.
  [3 <./img/aco.png>] <img/m1.png, id=120, 1027.84pt x 1027.84pt>
 File: img/m1.png Graphic file (type png)
  <use img/m1.png>
-Package pdftex.def Info: img/m1.png used on input line 149.
+Package pdftex.def Info: img/m1.png used on input line 151.
 (pdftex.def)             Requested size: 170.71652pt x 170.7155pt.
 
 <img/m2.png, id=121, 1027.84pt x 1027.84pt>
 File: img/m2.png Graphic file (type png)
  <use img/m2.png>
-Package pdftex.def Info: img/m2.png used on input line 150.
+Package pdftex.def Info: img/m2.png used on input line 152.
 (pdftex.def)             Requested size: 170.71652pt x 170.7155pt.
 
 <img/big.png, id=122, 1027.84pt x 1027.84pt>
 File: img/big.png Graphic file (type png)
  <use img/big.png>
-Package pdftex.def Info: img/big.png used on input line 151.
+Package pdftex.def Info: img/big.png used on input line 153.
 (pdftex.def)             Requested size: 170.71652pt x 170.7155pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 193.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 195.
 
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 193.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 195.
  [4] [5 <./img/m1.png> <./img/m2.png> <./img/big.png>] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 292--293
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 294--295
 
  []
@@ -516,49 +511,54 @@ Underfull \hbox (badness 10000) in paragraph at lines 296--297
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 298--299
+
+ []
+
 [7] [8] (./CI-report.bbl) [9]
 
-LaTeX Warning: Reference `fig:graphs' on page 10 undefined on input line 339.
+LaTeX Warning: Reference `fig:graphs' on page 10 undefined on input line 341.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 356--356
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 356--356
+Underfull \hbox (badness 10000) in paragraph at lines 358--358
 
  []
 
 
-Overfull \hbox (8.5pt too wide) in paragraph at lines 359--359
+Underfull \hbox (badness 10000) in paragraph at lines 358--358
+
+ []
+
+
+Overfull \hbox (8.5pt too wide) in paragraph at lines 361--361
 [] [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 365--370
+Underfull \hbox (badness 10000) in paragraph at lines 367--372
 
  []
 
 
-Overfull \hbox (8.5pt too wide) in paragraph at lines 370--370
+Overfull \hbox (8.5pt too wide) in paragraph at lines 372--372
 [] [] 
  []
 
 [10]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 391.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 393.
  [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 391.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 393.
  (./CI-report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 391.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 391.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 393.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 393.
 Package rerunfilecheck Info: File `CI-report.out' has not changed.
 (rerunfilecheck)             Checksum: 9EEE9D4DF75530643A55A94D4E0AD9A4;807.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 391.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 393.
  ) 
 Here is how much of TeX's memory you used:
  9015 strings out of 493633
@@ -581,7 +581,7 @@ cal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local
 /texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
 texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/t
 exlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on CI-report.pdf (11 pages, 1528872 bytes).
+Output written on CI-report.pdf (11 pages, 1528837 bytes).
 PDF statistics:
  251 PDF objects out of 1000 (max. 8388607)
  217 compressed objects within 3 object streams
