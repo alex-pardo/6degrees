@@ -2,9 +2,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage[english]{babel}
 \usepackage[]{algorithm2e}
-\usepackage{algorithmic}
-
-
+\usepackage{graphicx}
 % The following packages will be automatically loaded:
 % amsmath, amssymb, natbib, graphicx, url, algorithm2e
 
@@ -30,9 +28,9 @@
 
 
  % Authors with different addresses:
- \author{\Name{Àlex Pardo Fernandez} \Email{alexpardo.5@gmail.com}\\
+ \author{\Name{Àlex Pardo} \Email{alexpardo.5@gmail.com}\\
  \AND
- \Name{David Sánchez Pinsach} \Email{sdividis@gmail.com}\\
+ \Name{David Sánchez} \Email{sdividis@gmail.com}\\
  }
 
 \begin{document}
@@ -40,13 +38,15 @@
 \maketitle
 
 \begin{abstract}
-The six degree of separation is the most popular theory in social networks. Exists a large number of algorithm that tries to check this theory in a different types of networks. Otherwise, the Ant Colony Optimization is an approach of a computational intelligence method based on the swarm intelligence. Small individuals ants with few capabilities do a emerge behaviour able to find the shortest path between two points.
+The six degrees of separation is a well-known properties of small world networks. Social networks are small-world ones and also have this property. We pretend to calculate the degrees on separations in some social networks. There is a large number of algorithms to obtain the shortest path between two nodes in a graph, which is the problem we need to solve in order to check de degrees of some datasets.
+We would use Ant Colony Optimization (ACO) to solve the shortest path problem in a sub-optimal way. This Swarm Intelligent algorithm will help to solve a problem that is computationally hard when the number of edges and nodes increases. This Computational Intelligent algorithm is inspired in the behaviour of ants.
 
-The next project try to join these two concepts: the six degree of separation as a Ant Colony Optimization problem in one. We will code the algorithm and to see how this algorithm works in a two socials networks like Twitter and BlogCatalog.
+The next project try to join these two concepts: the six degree of separation as a Ant Colony Optimization problem in one. We will code the algorithm and see how this algorithm works in two socials networks like Twitter and BlogCatalog.
+
 \end{abstract}
 
 \begin{keywords}
-Swarm Intelligence, Ant Colony Optimization, Twitter, Degrees of Separation.
+Swarm Intelligence, Ant Colony Optimization, Twitter, , BlogCatalog, Degrees of Separation
 \end{keywords}
 
 
@@ -83,44 +83,50 @@ The main objective of this work will be to estimate the degrees of separation in
 
 \section{Previous work} % 2 pàgines
 
-The previous work is based on these ideas:
-\begin{itemize}
-\item ACO original \citep{Colorni91}: Explain the algorithm of the Ant Colony Optimization.
-\item General theory \citep{watts}: Explain the general theory about the six degree.
-\item On Twitter as \citep{cheng}: Explain the six degree on the Twitter network.
 
+Ant Colony Optimization (ACO) was first introduced by Alberto Colorni \citep{Colorni91} in 1991. It was initially used for achieving a sub-optimal solution for the Traveling Salesman Problem (TSP). This algorithm has been used also for obtaining the shortest path between two nodes or points as is explained by Daniel Angus \citep{angus}.
 
-\end{itemize}
+Additionally, the theory of the six degrees of distance in Small World networks has been developed by Frigyes Karinthy \citep{karinthy1929chain} and it is also explained by Duncan Watts \citep{watts}.
+
+Additionally, this theory has been used on social networks such as Twitter in which five degrees of separation has been demonstrated \citep{cheng}.
 
 \section{The CI methods} % 3-4 pàgines
 
-Swarm intelligence is a natural method based in the behaviour of the decentralized individuals who obtain solutions in some problem as result of their interactions. These agents normally are simple, with a few capabilities and follow simple rules. It includes ACO, flocking of the birds, bacterial grow or some on. 
+Swarm intelligence is a natural method based in the behaviour of decentralized individuals who obtain solutions for a certain problem taking profit of their interactions. These agents normally are simple, with a few capabilities and follow simple rules. It includes algorithms as ACO, flocking of the birds or bacterial grow among others. 
 \\\\
-As it is mentioned previously, we will use the ACO algorithm in order to obtain the degree of separation of two random person in a graph. This algorithm is inspired on the way ants have to solve the problem of finding the best path to achieve a goal such as going from the nest to the found food. The ants cannot communicate with the others and only use the trace of pheromone as a probabilistic method in order to obtain the choice when they have different options. When a ant travels through two points it leaves a few of pheromone on the trail. The other ants around these points feel the pheromone and try to follow this path. The paths with few pheromone will have less probability than the path with high pheromone. As shows the figure \ref{fig:aco}, the path of the ants converge to the shortest path between two points and this is the main characteristic of this method. We will use this idea of the shortest path between two points, as a minimum degree between two person in Foursquare and Twitter networks. In the appendix \ref{implementation}, it will be shown how the algorithm works in details.
+As it is mentioned previously, we will use the ACO algorithm in order to obtain the degree of separation between two random people in a graph. This algorithm is inspired in the way ants have to solve the problem of finding the best path to achieve a goal such as going from the nest to the found food. Ants use the trace of pheromone as a guidance system in order to choose which path to follow. When an ant travels through two points it leaves a few of pheromone on the trail. The other ants around feel the pheromone and try to follow this path. The paths with few pheromone will have less probability than a path with higher amount of pheromone. As it is shown in Fig. \ref{fig:aco}, the path of the ants converge to the shortest path between two points and this is the main feature of this method. We will use this idea of the shortest path between two points, as a minimum degree between two person in BlogCatalong and Twitter networks. In the appendix \ref{implementation}, it will be shown how the algorithm works.
 
 \begin{figure}[htb!]
 \centering
-\includegraphics[width=0.6\textwidth]{img/aco}
+\includegraphics[scale = 0.4]{img/aco}
 \caption[ACO algorithm]{ACO algorithm\protect\footnote{Credits to Johann Dréo, 27 may 2006}}
 \label{fig:aco}
 \end{figure}
 
 Some considerations needed to take into account are the parameters of the algorithm. These are: the amount of pheromone leaved by each ant, the number of ants of the system, the dissipation of the pheromone and the number of epochs the algorithm will run.
 
+The amount of pheromone an ant leaves in the trail is has been fixed to one. Since the graph we are going is has not weighted edges (i.e. edges initially have weight 1), the pheromone leaved is always the same.
+Those ants that have reached the objective node, return to the nest (starting node) and leave pheromone on the same path they followed to arrive to the objective.
+Additionally as \citep{dorigo1999ant} recommends, the amount of pheromone of the system is kept fixed, so at each iteration it is normalized to always sum a value equal to the number of nodes.
 % Amount of pheromone
 % - set to 1
 % - since weights are always 1, the pheromone is always the same
 % - ants returning to the nest (start) leave pheromone also in the trail
 % - additionally as \citep{dorigo1999ant} says, the amount of pheromone of the system is kept fixed, so at each iteration it is normalized to always sum a value equal to the number of nodes.
 
-
+On each epoch, a fixed number of ants is introduced in the system so new ants can follow the paths started by other ants and discover another ones. This way we are assuring exploration over exploitation. We would prefer some short path from start to objective rather than one single path since, having a larger number of paths will increase the probability of finding the shortest path.
+In order to optimize the algorithm, since we are trying to find a path shortest than 10 units of distance (it should be shortest than 7 but we allow paths a bit larger) those ants which are at distance 15 far from the nest are considered lost and are deleted from the system. This will increase the performance of the system.
 % Number of ants in the system
 % - on each epoch, some ants are introduced on the system this allows the new ants to follow the paths started by the ants on the previous epochs
-% - as \citep{dorigo1999ant} says, the number of ants should be equal to the number of nodes. Not possible in big graphs such as the Foursquare one, so we reduced the number of ants and increased the number of epochs
 % - Once an ant is at distance 15 from the nest, we consider the ant has been lost so we do not follow it anymore (i.e. the ant is deleted from the system) this allows the code to run much more faster since we are only interested in shortest paths.
+
+Dissipation of pheromone allows the system to forget bad solutions. In essence, bad solutions are long so the ants take longer to go from the nest to the food, the dissipation allows the ants to explore additional paths. Shortest paths also suffer the dissipation but since are shorter, ants will arrive faster and the dissipation will be lower because ants will take less time in going to the objective and returning to the nest.
 
 % Dissipation of the pheromone
 % - disipation of pheromone allows the system to forget bad solutions in essence, bad solutions are long so the ants take longer to go from the nest to the food, the disipation allows the ants to explore aditional paths. Shortest paths also suffer the disipation but since are shorter, ants will arrive faster and the disipation will be compensated by the pheromone leaved
+
+The number of epochs has to be taken into account using the number of ants on the system, the expected length of the path and the computational time associated to the problem.
+If there are a large number of ants the system will converge earlier (due to the possibility of finding the path). A smaller number of ants will require to increase the number of epochs needed to converge.
 
 % Number of epochs
 % - the number of epochs has to be taken into account using the number of ants on the system, the expected lentgh of the path and the computational time associated to the problem.
@@ -130,9 +136,23 @@ Some considerations needed to take into account are the parameters of the algori
 
 \section{Results and Discussion} % 1-2 pàgines de text
 
-In order to perform the tests we used three different datasets. The first ones are a subset of Twitter network. The third one has been obtained from \citep{ZafaraniLiu} and is based on BlogCatalog network.
+
+
+In order to perform the tests we used three different datasets. The first ones are a subset of Twitter network. The third one has been obtained from \citep{ZafaraniLiu} and is based on BlogCatalog network. The acquisition of the Twitter graphs is explained in \ref{implementation}.
 \par
 Each dataset has been used changing the parameters of the algorithm in order to get the shortest path using the less computational resources. This parameters have been experimentally set.
+On each execution, the starting and objective points are taken randomly from the whole graph.
+
+
+\begin{figure}[htb!]
+\centering     
+\subfigure[First Twitter graph]{\label{fig:graph1}\includegraphics[width=60mm]{img/m1}}
+\subfigure[Second Twitter Graph]{\label{fig:graph2}\includegraphics[width=60mm]{img/m2}}\\
+\subfigure[BlogCatalog graph]{\label{fig:graph3}\includegraphics[width=60mm]{img/big}}\\
+\caption{Plot of the datasets used}
+\end{figure}
+
+
 
 \begin{table}
 \centering
@@ -165,14 +185,8 @@ BlogCatalog & 10312 & 333983 \\ \hline
 
 \subsection{First dataset}
 
-In Figure \ref{fig:graph1}, one can see the graph plotted.
+In Figure \ref{fig:graph1},one can see the graph plotted.
 
-\begin{figure}[htb!]
-\centering
-\includegraphics[scale=0.3]{img/m1.png}
-\label{fig:graph1}
-\caption{First graph used}
-\end{figure}
 
 The parameters used for this graph are: 
 \begin{itemize}
@@ -208,12 +222,6 @@ Execution	&	Shortest path	& Average path	\\ \hline
 
 In Figure \ref{fig:graph2}, one can see the graph plotted.
 
-\begin{figure}[htb!]
-\centering
-\includegraphics[scale=0.3]{img/m2.png}
-\label{fig:graph2}
-\caption{Second graph used}
-\end{figure}
 
 The parameters used for this graph are: 
 \begin{itemize}
@@ -249,12 +257,6 @@ Execution	&	Shortest path	& Average path	\\ \hline
 
 In Figure \ref{fig:graph3}, one can see the graph plotted.
 
-\begin{figure}[htb!]
-\centering
-\includegraphics[scale=0.3]{img/big.png}
-\label{fig:graph3}
-\caption{Third graph used}
-\end{figure}
 
 The parameters used for this graph are: 
 \begin{itemize}
@@ -286,34 +288,41 @@ Execution	&	Shortest path	& Average path	\\ \hline
 \label{table:graph3}
 \end{table}
 
-\subsection{Discussion of results}
-The Different tables of results \ref{table:graph1}, \ref{table:graph2}, \ref{table:graph3} show several execution in order to get more realistic results. The parameters of the execution change between the different dataset in order to get better results depending on the type of the dataset. For example, the number of the ants that the algorithm introduces at each turn depends a lot on the size of the graph and we decide to increment the ants in a huge graph than the small.
+\subsection{Discussion of the results}
+The different tables of results Tables \ref{table:graph1}, \ref{table:graph2} and \ref{table:graph3} show several executions in order to get more realistic results. The parameters of the execution change between the different dataset in order to get better results depending on the features of each one (i.e. the number of nodes and edges). For example, the number of the ants that the algorithm introduces at each turn depends on the size of the graph (the higher the number of nodes, the higher the number of neighbours) so it is increased on bigger graphs.
 \\\par
-In the table \ref{table:graph1} we obtained the shortest path between the different execution between three and eleven and as mean 6.2. The result is pretty well because it is very close to the value six where the six degree theory are. Although the mean are 6.2, we obtained in three times that the shortest path are three. This information is very important because means that the algorithm works very good in some case and worst or not so good in others. Remember that this dataset has 1146 nodes and 1221 edges. The number is very similar and this characteristic can be give us better results but we can ensure this, we really think that this fact has a few impact in the results.
+In Table \ref{table:graph1} we obtained the shortest path between the different execution between three and eleven having a mean of 6.2. The result is pretty good because it is very close to the value we are trying to obtain (six). Although the mean are 6.2, we obtained in three times that the shortest path are three. That is because, first of all we have an incomplete graph (Twitter is much more larger) and second, not all the nodes in a social network will have the same degree to every node, six (or five in the case of Twitter) is expected to be the mean distance.
 \\\par
-With the second dataset, we obtained worst results than the previous one. As the table \ref{table:graph2} shows, the shortest path of the different executions are between three and eleven as the first dataset. However, in this occasion we obtained as mean 7.5. This result is a bit out to the six degree of separation theory and as the table \ref{table:graph2} shows, the average path in the majority of the executions are higher than the first graph. Remember this second dataset are a twitter dataset with more nodes and edges than the previous one. The increment of the nodes and edges has a negative effect in this case and we have tried to correct this effect adding more ants at each turn, decreasing the pheromone effect and increasing epochs though we did not obtain the good results of the first twitter dataset.
+With the second dataset, we obtained worst results than the previous one. As the table \ref{table:graph2} shows, the shortest path of the different executions are between three and eleven as the first dataset. However, we obtained a mean of 7.5. This result is larger than six, the average path in the majority of the executions is higher than in the first graph. This second dataset is a bigger one. The increment of the nodes and edges has a negative effect in this case and we have tried to correct this effect adding more ants at each turn, decreasing the pheromone decay and increasing epochs though we did not obtain as good results as on the first Twitter dataset. The possible explanation is the construction of the dataset.
 \\\par
-We executed our code with third dataset and in contrast on the other dataset that are in the environment of Twitter, this third graph is about the BlogCatalog. The idea is the same, the nodes are blogs and the edges are the connection between these blogs. As the table \ref{table:graph3} shows, the shortest path in all executions are between four and fourteen. These results are worst than the second dataset although the mean shortest graph is less. That means that this configuration of the parameters in the algorithm are more stable than the previous one. So, although in this case we do not obtain the best shortest path case, the mean average shortest path is 7. This result are a little near on the six degree separation theory and it is possible with this type of the parameters execution. Exist two parameters different in the graph 2 and 3 as are the number of epochs and the number of the ants that the system introduces at each turn. We are sure that the number of the ants that the system introduces at each turn is the principal motive in this improvement of the results. If you have a huge graph you will need more ants at each turn in order to explore more the nodes of your network.
+Third dataset represents the BlogCatalog friendship network. The idea is the same, the nodes are bloggers and the edges are the connection between these people. As Table \ref{table:graph3} shows, the shortest path in all executions is between four and fourteen. These results are worst than the second dataset although the mean shortest graph is lower but with higher variance. So, although in this case we do not obtain the best shortest path we expected, the mean average shortest path is 7. The high variance is saying that the ants are finding much more larger distances in the graph. This could be a feature of this social network. As it is said before, the length of the shortest path is expected to have a mean of six. More executions and a higher number of ants is required in order to achieve more significant results. It could not be done due to computational limitations.
 
-All the datasets have similar standard deviation and exist few variation or dispersion from the average results. Remember that a low standard deviation means that the data points tend to be very close to the expected value or mean.
+All the datasets have similar standard deviation and exist few variation or dispersion from the average results. Remember that a low standard deviation means that the data points tend to be very close to the expected value or mean. Although the variation is low, taking into account the desired results (values close or lower than six) in some cases is too high (a distance of fourteen is too high). As it is said on the discussion of the results achieved on the third dataset, the number of executions should be higher and also the number of ants in order to have less bias on the results and increase the probability of achieving the shortest path.
 
-Finally, we think that the configuration of the different parameters has in the most case very impact and it is difficult to determine which are the best. A most important parameters are the number of the ants that the system introduces at each turn. This parameter as the different tables of results shows, is very important because with a huge dataset you will need more ants than the small. 
+Finally, we think that the selection of the parameters is very important since it has a high impact on the results. As there is no metric for setting them, they have to be experimentally set.
 
 \section{Extensions, strengths and weaknesses}
 
-The need to choose a relative small dataset is a weakness of the our experiment and the our work. The method has high computational cost and the files of the big dataset are very heavy. We try to execute the algorithm in big datasets with standard personal computer but the algorithm should need very days of computation and better machines in order to obtain the results in a plausible time. The big problem does not reside in the code if not in the large dataset that the size is around the gigabytes. As a extension, could be very interesting if we can execute this code in these major datasets which contains millions of nodes. In the Internet you have access to these dataset in a easy way. However, with this small dataset we obtained better results and the method was strong in this type of datasets. So, we think that the algorithm also should obtain better results in this large datasets but we cannot ensure now.
-\\\par
-Other extension can be introducing more ants in the system. The number of the ants can be proportional to the size of the dataset and the large datasets can be use more ants than the small datasets. We could compared the influence of this parameter depend on the size the dataset and estimate the correct number to use it. Remember that our aim in this algorithm is not to find the better parameters of the Ant Colony Optimization problem in order to find the most optimal configuration. It is only a first approach to the six degree theory with ACO in order to see how this method works to obtain the degrees of separation.
-\\\par
-Finally we could modified the code in order to approximate more to the real case of the ants with the age in the ants that can be influence the capacity to follow the pheromone or introduce more realistic behaviour of the life (ants can be died with some probability).
+Initially, we expected to use a huge Twitter dataset (over 85 million edges and 11 million nodes) and a smaller one of Foursquare (another social network). This graphs were computationally intractable since not only the number of nodes and edges is increased, but also the number of ants required to find the path and therefore the pheromone matrix.
+It would be very interesting to execute this code in these big datasets which contain millions of nodes. It is not that easy to find big social network datasets on the Internet. However, with the small dataset used, we obtained good results and the method has been proved to work pretty well. So, we think that the algorithm also should obtain good results in this large datasets but we cannot ensure it by now.
+
+Other extension can be introducing more ants in the system. The number of the ants can be proportional to the size of the dataset and the large datasets can use more ants than the smaller ones. We could compare the influence of this parameter depending on the size of the dataset and estimate the more suitable value for each problem.
+
+One of the strengths of this method is the optimization performed in order to have less computational cost and be able to run it (without parallelized code) in a laptop using a relatively big dataset. 
+ACO method allows a fast near-optimal result of the shortest path in huge graphs having an easy implementation and a simple theory behind it.
+
+One of the weakness is that the method is not replicable, that is, every execution could have a different result, for this reason it is mandatory to execute the algorithm several times. Due to computational cost, we were not able to perform as many tests as we expected, for example, compare the parameters used or have a large number of executions in order to have a better approximation of the real mean path of the graphs.
 
 \section{Conclusions}
-To sum up, the algorithm of the Ant Colony Optimization works pretty well in order to obtain the degrees of the separation in these social networks dataset as the table of results shows. The difficulty to codify the algorithm is not harder but you can obtain better results. 
-\\\par
-Also, as the algorithm try to mimic a real case of the ants it is more easy to understand the steps and how the algorithm works because you have real cases in the nature. It curious as these animals that have limited capabilities and do not communicate between them, obtain the shortest path between two points. This type of behaviour is named by emergence system and more animals in the nature have this behaviour like birds, fishes or ants. 
-\\\par
-Finally, we took a wonderful experience and also we learned a lot about these methods based on the ants. However, we have a thorn stuck because we have not been able to execute this algorithm with a graph based on millions of the nodes. Despite this, it is a motive to continue this project.
+Ant Colony Optimization is an easy way of finding the shortest path in those environments in where an optimal solution is impossible to achieve. In our specific problem of obtaining the degrees of separation between random people in social networks, the algorithm performed well and the results obtained were close to the ones expected.
 
+Due to computational requirements of the algorithm we were not able to perform the tests on the desired datasets but we solved it using smaller ones but yet extracted from real social networks.
+
+The theory behind the small world networks is really surprising and interesting and have some nice properties that could be exploited in a variety of areas such as predicting the extension of a rumor or in order to predict the impact of performing a commercial campaign in a certain social network.
+
+Finally, the algorithm performed as expected, we have used some of the tricks present on literature in order to make the method perform better and the final results are good and are the ones we expected to achieve. It would be interesting to apply the algorithm to a huge social network such as Twitter or Facebook which are the most common nowadays.
+
+\vspace{1cm}
 \bibliography{bibliography.bib}
 
 \appendix
@@ -322,54 +331,61 @@ Finally, we took a wonderful experience and also we learned a lot about these me
 \section{Implementation details} 
 \label{implementation}
 
-The application has been coded using Python 2.7.6 \footnote{Python webpage: http://www.python.org/}. The system uses NetworkX \footnote{NetworkX webpage: http://networkx.github.io/ } library in order to represent the graph. Additionally, in order to create an small dataset based on twitter, we used Twython implementation of the Twitter API in order to acquire the data and again, NetworkX in order to save the resulting graph. Also we use the matplotlib library in order to plot the graphs \footnote{MatPlotlib webpage: http://matplotlib.org/}.
-\\\par
-We based the code in the next basic pseudo-code algorithm of the ACO:
+The application has been coded using Python 2.7.6 \footnote{Python webpage: http://www.python.org/}. The system uses NetworkX \citep{networkx} library in order to represent the graph. Additionally, in order to create an small dataset based on twitter, we used Twython implementation of the Twitter API in order to acquire the data and again, NetworkX in order to save the resulting graph. Also we use the matplotlib library in order to plot the graphs \citep{matplotlib}.
+
+\subsection{Dataset retrieval}
+
+In order to create an small dataset based on Twitter, Twython (based on Twitter API) has been used.
+Due to Twitter limitations (only five-teen queries every five-teen minutes), we were not able to obtain a really big graph. What has been done is, beginning from a certain user, keep expanding the neighbours. Using his method we obtained two different graphs, a bigger and an smaller one. This two graphs are the ones on the left in Figure \ref{fig:graphs}.
+\subsection{Algorithm}
+
+Here the pseudocode of ACO is presented. In Algorithm \ref{alg:main}, one can see the main loop of the method and in Algorithm \ref{alg:step}, the step performed by each ant. As could be seen, the algorithm is pretty simple.
+
 \begin{algorithm}
-\caption{Ant Colony Optimization algorithm}
-\begin{algorithmic} 
-\WHILE{not terminate}
-\STATE generateSolutions();
-\STATE daemonActions();
-\STATE pheromoneUpdate();
-\ENDWHILE
-\end{algorithmic}
+ \KwResult{Obtain the shortest path in a graph}
+ initialize $G:=$Graph, $P:=$Pheromone and $A:=$Ants \\
+ \For{each epoch}{
+ 	\For{each $a \in A$}{
+ 		$a$.step($P$)\\
+ 		Save new pheromone into a tmp variable\\
+ 		\If{$a$ in objective}{
+ 			$a$.returnNest()\\
+ 		}
+ 	}
+ 	update $P$\\
+ }
+ Obtain the shortest path for each $a\in A$ that finished
+ 		
+ \caption{Main function}
+ \label{alg:main}
 \end{algorithm}
 
-Next to the pseudo-code we want to enter a few detail of some parts of the code and how this parts had been coded.
+\begin{algorithm}
+\KwResult{The ant performs one step}
+Find the neighbours in $G$\\
+Get the pheromone on each edge\\
+Get a random number using the pheromone as probabilities\\
+Move towards the selected edge\\
+Leave pheromone\\
+\caption{Ant step}
+\label{alg:step}
+\end{algorithm}
+
+Next, some details of the implementation are explained:
 
 \begin{itemize}
-\item \textbf{Ants}: The main python script provides a ant class in order to encapsulate all the concepts of the ant in a class. As attributes this class have the path, the start point, the final point and increment of the pheromones. The class also has some methods in order to provide some capabilities in the ants like setStart(), setObjective(), step(), chooseNeighbour(), hasReachedObjective() and returnToStart().
+\item \textbf{Ants}: An ant class is defined in order to encapsulate all the concepts, methods and variables of the ant. As internal attributes, this class has the path, the starting point, the final point and the increment of the pheromones at each step. The class also has some methods in order to make the ants to perform a certain task. This methods are setStart(), setObjective(), step(), chooseNeighbour(), hasReachedObjective() and returnToStart().
 
-\item \textbf{Pheromone}: The pheromone is the most important part of the our problem and our code. Remember that the ants try to follow the path which contain high quantity of pheromone. However the pheromone effect disappears with the time. For this reason, the algorithm need to define two parameters in order to determine the quantity of the pheromone that leaves the ant and the quantity of the pheromone disappears at each turn. The table \ref{parameters} explains both parameters in detail. The normalized the pheromones in the system in order that in all epochs have the same quantity of pheromone. For do this task we use a global system pheromone parameter. 
+%\item \textbf{Pheromone}: The pheromone is the most important part of othe problem. Ants try to follow the path which contains a higher amount of pheromone. However the pheromone effect disappears with the time (it evaporates). For this reason, in the algorithm, two parameters need to be defined in order to determine the quantity of pheromone that leaves the ant and the quantity of pheromone evaporated at each turn. 
 
-\item \textbf{Choice the next nodes}: We use a probabilistic method to obtain the next node at each turn. The different options can have pheromone and the sum of pheromone of the all options are one. We build and array with a size N based on the probabilities of the all options. The next step is randomly selects some cell of the array and check which option of the path is. The ants should be follow this option in this turn.
+\item \textbf{Choice the edge}: Every ant has to select one edge at each step. This is done using the pheromone as a probability of choosing that edge. This is done by normalizing the pheromone in order to sum one and then a random number is used to select the chosen path. It is performed like in a roulette wheel, where each edge has a bigger or smaller slice of the wheel so it has more or less probability.
 
 \item \textbf{Start and final points of the ants}: The algorithm selects always randomly the start and the final point of the ants using the standard random methods of the python library.
 
-\item \textbf{Ants at each turn}: The algorithm does not start with all the ants in the start point. At each turn, the algorithm add more ants in the start point. Also, we add a parameter named \emph{NUM\_ANTS} to control the maximum number of the ants in the whole system.
+\item \textbf{Ants at each turn}: The algorithm does not start with all the ants in the start point. At each turn, the algorithm adds more ants placed in the starting point. Also, we add a parameter named \emph{NUM\_ANTS} to control the maximum number of the ants in the whole system.
 
 \end{itemize}
 
 
 
 \end{document}
-
-
-
-%
-%@article{Swarm intelligence,
-%author = {Wikipedia},
-%title = {Swarm intelligence},
-%month = January,
-%year = {2014},
-%url = {http://en.wikipedia.org/wiki/Swarm_intelligence}
-%}
-%
-%@article{Six degrees of separation,
-%author = {Wikipedia},
-%title = {Six degrees of separation},
-%month = December,
-%year = {2013},
-%url = {http://en.wikipedia.org/wiki/Swarm_intelligence}
-%}

@@ -1,4 +1,4 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{9}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -21,6 +21,23 @@ Alberto Colorni, Marco Dorigo, and Vittorio Maniezzo.
 \newblock {Distributed Optimization by Ant Colonies}.
 \newblock In \emph{European Conference on Artificial Life}, pages 134--142,
   1991.
+
+\bibitem[Dorigo et~al.(1999)Dorigo, Di~Caro, and Gambardella]{dorigo1999ant}
+Marco Dorigo, Gianni Di~Caro, and Luca~M Gambardella.
+\newblock Ant algorithms for discrete optimization.
+\newblock \emph{Artificial life}, 5\penalty0 (2):\penalty0 137--172, 1999.
+
+\bibitem[Hagberg et~al.(2008)Hagberg, Schult, and Swart]{networkx}
+Aric~A. Hagberg, Daniel~A. Schult, and Pieter~J. Swart.
+\newblock Exploring network structure, dynamics, and function using {NetworkX}.
+\newblock In \emph{Proceedings of the 7th Python in Science Conference
+  (SciPy2008)}, pages 11--15, Pasadena, CA USA, August 2008.
+
+\bibitem[Hunter(2007)]{matplotlib}
+J.~D. Hunter.
+\newblock Matplotlib: A 2d graphics environment.
+\newblock \emph{Computing In Science \& Engineering}, 9\penalty0 (3):\penalty0
+  90--95, 2007.
 
 \bibitem[Karinthy(1929)]{karinthy1929chain}
 Frigyes Karinthy.
