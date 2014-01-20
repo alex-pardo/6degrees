@@ -1,5 +1,5 @@
 '''
-Implementation of the Ant Colony Optimization problem to check the six degree theory in a network like Twitter or Foursquare.
+Implementation of the Ant Colony Optimization problem to check the six degree theory in a network like Twitter or BlogCatalog.
 @autor: Alex Pardo Fernandez: alexpardo.5@gmail.com
 @autor: David Sanchez Pinsach: sdividis@gmail.com
 
@@ -47,7 +47,6 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS
 	best_path = float('inf')
 	iterations_finished = 0
 	# REPEAT A CERTAIN NUMBER OF TIMES (to acquire mean results)
-	#for iter in range(0, ITERATIONS):
 	while iterations_finished < ITERATIONS:
 
 		total_ants = 0
@@ -55,12 +54,8 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS
 		total_length = 0
 		shortest_path = float('inf')
 		# Initialize the pheromone matrix (weights of the transition fo the edges) to 1
-
 		pheromone = {} # adjacency matrix
-		# for node in G.nodes():
-		# 	for neigh in G.neighbors(node):
-		# 		pheromone[str(node)+','+str(neigh)] = 1
-
+        
 		# Setup start and end points
 		start = random.choice(G.nodes())
 		while G.neighbors(start) < 7:
@@ -70,9 +65,6 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS
 			end = random.choice(G.nodes())
 
 		print 'Finding path between ', str(start), 'and', str(end)
-
-		#threads = [None] * NUM_ANTS
-		#returned_matrices = [None] * NUM_ANTS
 		# Setup the ants (initialize the current_node param. & the objective)
 		ants = []
 		for a in range(0, ANTS_PER_TURN):
@@ -86,11 +78,6 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS
 		ants_end = 0
 		# WHILE not (all ants reached the objective)
 		while (epoch < MAX_EPOCH and len(ants) > 0) or ants_end == 0:
-			#if epoch%30 == 0:
-			# print len(ants)
-			#print epoch
-			# print len(pheromone)
-			# print '----'
 			epoch += 1
 			a = len(ants)
 			tmp_counter = 0
@@ -110,14 +97,6 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS
 				tmp = ants[a].step(pheromone, DECAY)#, returned_matrices, a)
 				pheromone_update = dict(chain(pheromone_update.items(), tmp.items()))
 			
-				#threads[a] = Thread(target=ants[a].step, args=(pheromone, returned_matrices, a))
-				#threads[a].start()
-
-			#for a in range(len(ants)):
-			#	threads[a].join()
-			
-			#for i in range(len(ants)):
-			#	pheromone = combineDics(pheromone, returned_matrices[i])
 			pheromone = dict(chain(pheromone.items(), pheromone_update.items()))
 			ants_finish_last_turn = 0
    			for a in xrange(len(ants)-1,0,-1):
@@ -127,36 +106,18 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS
 					tmp_len = tmp['len']
 					if tmp_len > 0:
 						pheromone.update(tmp['pheromone'])
-						#print 'ANT ENDS'
-						# print tmp_len
 						ants_finish_last_turn += tmp_len
 						total_length += tmp_len
 						finished_ants += 1
 						if tmp_len < shortest_path:
 							shortest_path = tmp_len
-						#pheromone = combineDics(pheromone, pheromone_update)
 					del(ants[a])
-					#del(threads[a])
-					#del(returned_matrices[a])
 					total_ants -= 1
 					ants_end += 1
-
-
-			# for a in range(0, len(ants)):
-			# 	pheromone_update = ants[a].step(pheromone, pheromone_update)
-			# 	if ants[a].hasReachedObjective():
-			# 		deleting_list.append(a)
-			# if len(deleting_list) > 0:
-			# 	for ant in deleting_list[::-1]:
-			# 		pheromone_update = ants[ant].returnToStart(pheromone)
-			# 		del(ants[ant])
-			# pheromone = combineDics(pheromone, pheromone_update)
-
 		# END WHILE
 		print 'All ants ended'
 
 		# Recover the path with higher weight (greedy)
-		#result = recoverPath(pheromone, str(start), str(end))
 		try:
 			result = total_length/float(finished_ants)
 			print 'Avg. path:', result
@@ -169,25 +130,6 @@ def main(NUM_ANTS = 10000000, ITERATIONS = 50, DECAY = 0.01, INCREMENT = 1, ANTS
 			pass
 			#print 'None of the ants have finished :('
 		print '---------'
-	# Get mean results
-	# edge_labels = {}
-	# for key in pheromone.keys():
-	# 	tmp = key.split(',')
-	# 	edge_labels[(int(tmp[0]),int(tmp[1]))] = round((pheromone[key]/float(max(pheromone.values())))*100)/100
-	# 	G[int(tmp[0])][int(tmp[1])]['weight'] = round((pheromone[key]/float(max(pheromone.values())))*100)/100
-	# node_labels = {}
-	# for i in range(1,9):
-	# 	node_labels[i] = str(i)
-
-	# pos = nx.spring_layout(G, scale=20)
-	
-	# nx.draw_networkx_nodes(G, pos)
-	# nx.draw_networkx_edges(G,pos)
-	# nx.draw_networkx_labels(G, pos, node_labels, font_size=16)
-	# nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-	# plt.axis('off')
-	# plt.show()
-
 	print 'FINAL MEAN SHORTEST PATH:' , numpy.mean(results), '\nWITH STD. DEVIATION:', numpy.std(results)
 	print 'FINAL SHORTEST PATH', best_path
 
@@ -201,9 +143,6 @@ def normalizePheromone(pheromone, decay, num_ants, update):
 	normalization_factor = nu
 	pheromone.update((x, (y*(1-decay))/float(nu)) for x, y in pheromone.items())
 	return pheromone
-	# for key in pheromone.keys():
-	# 	new[key] = (pheromone[key] * (1-decay))/float(nu)
-	# return new
 
 ''' Method to recover the path between two nodes'''
 def recoverPath(pheromone, start, objective):
@@ -218,10 +157,6 @@ def recoverPath(pheromone, start, objective):
 			if key.startswith(current):
 				if key.split(',')[1] not in visited:
 					candidates[key] = pheromone[key]
-					#try:
-					#	pheromone.pop(key,None)
-					#except:
-					#	print 'except'
 		if len(candidates.keys()) == 0:
 			current = last[0]
 			length += 1
@@ -245,13 +180,6 @@ def getMean(results):
 def combineDics(D1, D2):
 	D = dict(chain(D1.items(), D2.items()))
 	return D
-
-	# for new_value in D2.keys():
-	# 	try:
-	# 		D1[new_value] = float(D1[new_value] + D2[new_value])
-	# 	except Exception, e: 
-	# 		D1[new_value] = float(D2[new_value])
-	# return D1
 		
 
 ###############################	
@@ -303,7 +231,6 @@ class Ant():
     	self.path.append(self.current)
     	# return the new weights
     	return new
-    	#result[index] = new
 
     '''Method to choose the neighbour step with certain probabilities'''
     def chooseNeighbour(self, probs): # Look at test.py 
@@ -338,11 +265,4 @@ class Ant():
     			pheromone[str(self.path[pos-1]) +','+str(self.path[pos])] = 1 + self.increment		
     	return {'len':len(self.path), 'pheromone':pheromone}
     	
-
 main()
-
-
-
-
-
-
